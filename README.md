@@ -63,7 +63,7 @@ Students can track their mentorship requests and search for suitable mentors.
 ![Mentors](images/4-admin-mentors.jpg)
 
 ### Mentorship Requests
-![Requests](images/5-admin-requests.jpg)
+![Requests](images/admin-requests.jpg)
 
 </details>
 
@@ -76,7 +76,7 @@ Students can track their mentorship requests and search for suitable mentors.
 ![Mentor Search](images/6%20alumni-mentor-search.jpg)
 
 ### Mentorship Requests
-![Mentor Requests](images/11%20%20mentor-requests.jpg)
+![Mentor Requests](images/mentor-requests.jpg)
 
 ### AI-Assisted CV Analysis
 ![CV Analysis](images/13%20%20mentor-cv-analysis.jpg)
