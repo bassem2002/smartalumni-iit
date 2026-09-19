@@ -112,7 +112,7 @@ SmartAlumni aims to:
 ┌──────────────┐  ┌──────────────┐
 │ PostgreSQL   │  │ DeepSeek API │
 └──────────────┘  └──────────────┘
----
+
 
 ## 🖼️ Application Preview
 
