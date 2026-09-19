@@ -1,3 +1,117 @@
+# SmartAlumni IIT 🎓
+
+> Alumni–Student mentoring platform with Full-Stack development and AI-assisted CV analysis.
+
+SmartAlumni IIT is a web platform designed to connect IIT students with alumni mentors and facilitate professional mentoring.
+
+The platform provides dedicated experiences for **Students, Alumni/Mentors and Administrators**, including mentor discovery, mentorship requests, messaging, profile management and intelligent CV processing.
+
+---
+
+## 🎯 Project Objectives
+
+SmartAlumni aims to:
+
+- Connect students with suitable alumni mentors
+- Facilitate mentorship requests and follow-up
+- Provide direct communication between students and mentors
+- Centralize alumni and student profiles
+- Help users enrich their profiles from their CV
+- Provide administrators with platform supervision and statistics
+
+---
+
+## 🚀 Key Features
+
+### 👤 Authentication & Profiles
+- JWT-based authentication
+- Student / Alumni / Administrator roles
+- User profile management
+- Professional and academic information
+
+### 🔎 Mentor Discovery
+- Search alumni mentors
+- Filter by keywords, sector and country
+- View mentor profiles
+- Send mentorship requests
+
+### 🤝 Mentorship Management
+- Send and manage mentorship requests
+- Accept or reject requests
+- Track request status
+- Mentor availability management
+
+### 💬 Messaging
+- Conversations between students and mentors
+- Message history
+- Communication after mentorship approval
+
+### 📄 Intelligent CV Processing
+- CV upload
+- Text extraction using Apache Tika
+- AI-assisted CV analysis
+- DeepSeek API integration
+- Local Regex / keyword fallback
+- Manual review of extracted information
+- Mapping validated CV data to the user profile
+
+### 🛡️ Administration
+- User management
+- Mentor management
+- Mentorship request supervision
+- Platform statistics
+- Alumni distribution visualization
+- AI-assisted statistics interface
+
+---
+
+## 🛠️ Tech Stack
+
+### Backend
+
+`Java 21` • `Spring Boot` • `Spring Security` • `Spring Data JPA` • `PostgreSQL`
+
+`JWT` • `MapStruct` • `Apache Tika` • `Swagger / OpenAPI`
+
+### Frontend
+
+`Angular 19` • `TypeScript` • `RxJS`
+
+### AI & Data Processing
+
+`DeepSeek API` • `Apache Tika` • `Regex / Keyword Analysis`
+
+### Development Tools
+
+`Git` • `GitHub` • `Postman` • `Maven`
+
+---
+
+## 🏗️ Architecture
+
+```text
+┌─────────────────────────────┐
+│        Angular 19           │
+│          Frontend           │
+└──────────────┬──────────────┘
+               │ REST API
+               ▼
+┌─────────────────────────────┐
+│      Spring Boot / Java     │
+│          Backend            │
+├─────────────────────────────┤
+│ Authentication & Security   │
+│ Profiles                    │
+│ Mentorship                  │
+│ Messaging                   │
+│ CV Processing               │
+│ Administration              │
+└───────┬─────────────┬───────┘
+        │             │
+        ▼             ▼
+┌──────────────┐  ┌──────────────┐
+│ PostgreSQL   │  │ DeepSeek API │
+└──────────────┘  └──────────────┘
 ## 🖼️ Application Preview
 
 ### 🛡️ Administrator Dashboard
