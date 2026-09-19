@@ -24,29 +24,34 @@ SmartAlumni aims to:
 ## 🚀 Key Features
 
 ### 👤 Authentication & Profiles
+
 - JWT-based authentication
 - Student / Alumni / Administrator roles
 - User profile management
 - Professional and academic information
 
 ### 🔎 Mentor Discovery
+
 - Search alumni mentors
 - Filter by keywords, sector and country
 - View mentor profiles
 - Send mentorship requests
 
 ### 🤝 Mentorship Management
+
 - Send and manage mentorship requests
 - Accept or reject requests
 - Track request status
 - Mentor availability management
 
 ### 💬 Messaging
+
 - Conversations between students and mentors
 - Message history
 - Communication after mentorship approval
 
 ### 📄 Intelligent CV Processing
+
 - CV upload
 - Text extraction using Apache Tika
 - AI-assisted CV analysis
@@ -56,6 +61,7 @@ SmartAlumni aims to:
 - Mapping validated CV data to the user profile
 
 ### 🛡️ Administration
+
 - User management
 - Mentor management
 - Mentorship request supervision
@@ -112,7 +118,9 @@ SmartAlumni aims to:
 ┌──────────────┐  ┌──────────────┐
 │ PostgreSQL   │  │ DeepSeek API │
 └──────────────┘  └──────────────┘
+```
 
+---
 
 ## 🖼️ Application Preview
 
@@ -160,6 +168,7 @@ Students can track their mentorship requests and search for suitable mentors.
 
 ![Student Mentor Search](images/student-mentor-search.png)
 
+---
 
 ## 📸 More Screenshots
 
@@ -169,22 +178,26 @@ Students can track their mentorship requests and search for suitable mentors.
 <br>
 
 ### Dashboard Overview
+
 ![Admin Overview](images/admin-overview.jpg)
 
 ### AI Assistant
+
 ![AI Assistant](images/admin-ai-assistant.jpg)
 
 ### User Management
+
 ![User Management](images/admin-users.jpg)
 
 ### Mentor Management
+
 ![Mentor Management](images/admin-mentors.jpg)
 
 ### Mentorship Requests
+
 ![Mentorship Requests](images/admin-requests.jpg)
 
 </details>
-
 
 <details>
 <summary><b>🎓 Alumni Interface — View screenshots</b></summary>
@@ -192,22 +205,26 @@ Students can track their mentorship requests and search for suitable mentors.
 <br>
 
 ### Mentor Search
+
 ![Mentor Search](images/alumni-mentor-search.jpg)
 
 ### Mentorship Requests
+
 ![Mentorship Requests](images/alumni-requests.jpg)
 
 ### AI-Assisted CV Analysis
+
 ![CV Analysis](images/alumni-cv-analysis.jpg)
 
 ### Messaging
+
 ![Messaging](images/alumni-messaging.jpg)
 
 ### Profile
+
 ![Profile](images/alumni-profile.jpg)
 
 </details>
-
 
 <details>
 <summary><b>🤝 Mentor Interface — View screenshots</b></summary>
@@ -215,22 +232,26 @@ Students can track their mentorship requests and search for suitable mentors.
 <br>
 
 ### Mentorship Requests
+
 ![Mentorship Requests](images/mentor-requests.jpg)
 
 ### Mentor Search
+
 ![Mentor Search](images/mentor-search.jpg)
 
 ### AI-Assisted CV Analysis
+
 ![CV Analysis](images/mentor-cv-analysis.jpg)
 
 ### Messaging
+
 ![Messaging](images/mentor-messaging.jpg)
 
 ### Profile
+
 ![Profile](images/mentor-profile.jpg)
 
 </details>
-
 
 <details>
 <summary><b>🎓 Student Interface — View screenshots</b></summary>
@@ -238,15 +259,19 @@ Students can track their mentorship requests and search for suitable mentors.
 <br>
 
 ### Mentorship Requests
+
 ![Student Requests](images/student-requests.png)
 
 ### Messaging
+
 ![Student Messaging](images/student-messaging.png)
 
 ### Profile
+
 ![Student Profile](images/student-profile.png)
 
 ### Find a Mentor
+
 ![Student Mentor Search](images/student-mentor-search.png)
 
 </details>
