@@ -28,7 +28,7 @@ Users can search for mentors by keywords, sector and country.
 
 Users can upload a CV, analyze its content and validate the extracted information before updating their profile.
 
-![CV Analysis](images/8%20alumni-cv-analysis.jpg)
+![CV Analysis](images/18 student-profile.jpg)
 
 ### 💬 Messaging
 
