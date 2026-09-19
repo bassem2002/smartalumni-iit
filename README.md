@@ -101,7 +101,7 @@ Students can track their mentorship requests and search for suitable mentors.
 ![Mentor Search](images/12%20mentor-search.jpg)
 
 ### AI-Assisted CV Analysis
-![CV Analysis](images/13%20mentor-cv-analysis.jpg)
+![CV Analysis](images/13mentor-cv-analysis.jpg)
 
 ### Messaging
 ![Messaging](images/14%20mentor-messaging.jpg)
