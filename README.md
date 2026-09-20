@@ -121,6 +121,13 @@ SmartAlumni aims to:
 ```
 
 ---
+## 🎥 Demo Video
+
+A complete demonstration of SmartAlumni IIT, including the different user roles and the main platform workflows.
+
+▶️ **[Watch the SmartAlumni IIT Demo](https://drive.google.com/file/d/1j74wpRJeC8yzun8rzkfKVTZCarL3RZ1l/view?usp=sharing)**
+
+---
 
 ## 🖼️ Application Preview
 
