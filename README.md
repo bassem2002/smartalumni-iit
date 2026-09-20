@@ -129,6 +129,31 @@ A complete demonstration of SmartAlumni IIT, including the different user roles 
 
 ---
 
+## 👥 Project Context
+
+SmartAlumni IIT was officially developed as a 3-student academic project at the Institut International de Technologie (IIT), Sfax.
+
+In practice, I carried out most of the technical implementation of the platform, including the backend, frontend integration, CV processing workflow, AI integration, and overall system integration.
+
+---
+
+## 👨‍💻 My Contribution
+
+My main contributions included:
+
+- Design and implementation of the Spring Boot backend
+- Development and integration of REST APIs
+- Angular frontend integration
+- Authentication and role-based access
+- CV upload and processing workflow
+- CV text extraction using Apache Tika
+- DeepSeek API integration for AI-assisted CV analysis
+- Local Regex / keyword fallback analysis
+- CV-to-profile data mapping
+- Mentorship workflow integration
+- Messaging and profile integration
+- Testing, debugging and full system integration
+
 ## 🖼️ Application Preview
 
 ### 🛡️ Administrator Dashboard
