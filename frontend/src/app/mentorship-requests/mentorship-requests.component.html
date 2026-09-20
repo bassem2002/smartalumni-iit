@@ -1,0 +1,157 @@
+<div class="container requests-page-wrapper animate-fade-in">
+  <!-- Page Header -->
+  <header class="requests-header">
+    <div class="header-content">
+      <div class="brand-badge">Espace Mentorat</div>
+      <h1>Mes demandes de <span>mentorat</span></h1>
+      <p class="header-subtitle">
+        {{ userType === 'ALUMNI' 
+          ? 'Gérez vos demandes de mentorat reçues et accompagnez les futurs talents de l\'IIT.' 
+          : 'Suivez l\'état de vos candidatures de mentorat et communiquez avec vos mentors.' }}
+      </p>
+    </div>
+    <div class="header-actions" *ngIf="userType === 'ETUDIANT'">
+      <a routerLink="/mentors" class="btn btn-gold">
+        <span class="icon">🔍</span> Trouver un mentor
+      </a>
+    </div>
+    <div class="header-actions" *ngIf="userType === 'ALUMNI'">
+      <a routerLink="/profile" class="btn btn-outline">
+        <span class="icon">👤</span> Ma disponibilité
+      </a>
+    </div>
+  </header>
+
+  @if (loading) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Chargement de vos demandes...</p>
+    </div>
+  } @else {
+    <!-- Quick Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-label">Total</span>
+        <span class="stat-value">{{ stats.total }}</span>
+      </div>
+      <div class="stat-card warning">
+        <span class="stat-label">En attente</span>
+        <span class="stat-value">{{ stats.enAttente }}</span>
+      </div>
+      <div class="stat-card success">
+        <span class="stat-label">Acceptées</span>
+        <span class="stat-value">{{ stats.acceptees }}</span>
+      </div>
+      <div class="stat-card danger">
+        <span class="stat-label">Refusées</span>
+        <span class="stat-value">{{ stats.refusees }}</span>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters-bar card-surface">
+      <button class="filter-btn" [class.active]="filterStatus === 'TOUTES'" (click)="setFilter('TOUTES')">Toutes</button>
+      <button class="filter-btn" [class.active]="filterStatus === 'EN_ATTENTE'" (click)="setFilter('EN_ATTENTE')">En attente</button>
+      <button class="filter-btn" [class.active]="filterStatus === 'ACCEPTEE'" (click)="setFilter('ACCEPTEE')">Acceptées</button>
+      <button class="filter-btn" [class.active]="filterStatus === 'REFUSEE'" (click)="setFilter('REFUSEE')">Refusées</button>
+    </div>
+
+    <!-- Requests List -->
+    <div class="requests-list">
+      @for (request of filteredRequests; track request.id) {
+        <article class="request-card-modern card-surface animate-fade-in">
+          <div class="request-header">
+            <div class="user-info-box">
+              <div class="avatar-container">
+                <ng-container *ngIf="userType === 'ALUMNI'">
+                  <img *ngIf="request.etudiantPhoto" [src]="request.etudiantPhoto" alt="" class="user-avatar">
+                  <div *ngIf="!request.etudiantPhoto" class="avatar-initials">
+                    {{ request.etudiantPrenom?.[0] }}{{ request.etudiantNom?.[0] }}
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="userType === 'ETUDIANT'">
+                  <img *ngIf="request.alumniPhoto" [src]="request.alumniPhoto" alt="" class="user-avatar">
+                  <div *ngIf="!request.alumniPhoto" class="avatar-initials">
+                    {{ request.alumniPrenom?.[0] }}{{ request.alumniNom?.[0] }}
+                  </div>
+                </ng-container>
+              </div>
+              <div class="user-details">
+                <div class="name-role">
+                  <h3 *ngIf="userType === 'ALUMNI'">{{ request.etudiantPrenom }} {{ request.etudiantNom }}</h3>
+                  <h3 *ngIf="userType === 'ETUDIANT'">{{ request.alumniPrenom }} {{ request.alumniNom }}</h3>
+                  <span class="user-badge" [class]="userType === 'ALUMNI' ? 'student' : 'alumni'">
+                    {{ userType === 'ALUMNI' ? 'Étudiant' : 'Mentor' }}
+                  </span>
+                </div>
+                <p class="request-date">
+                  {{ userType === 'ALUMNI' ? 'Reçue le' : 'Envoyée le' }} {{ request.dateCreation | date:'dd MMMM yyyy' }}
+                </p>
+              </div>
+            </div>
+            
+            <div class="status-badge-container">
+              <span class="status-badge" [class]="request.statut?.toLowerCase()">
+                {{ request.statut === 'EN_ATTENTE' ? 'En attente' : request.statut === 'ACCEPTEE' ? 'Acceptée' : 'Refusée' }}
+              </span>
+            </div>
+          </div>
+
+          <div class="request-content">
+            <div class="message-bubble">
+              <span class="message-label">Message d'accompagnement :</span>
+              <p class="message-text">"{{ request.message || 'Aucun message fourni.' }}"</p>
+            </div>
+          </div>
+
+          <div class="request-actions">
+            <!-- Alumni (Incoming) Actions -->
+            <ng-container *ngIf="userType === 'ALUMNI'">
+              @if (request.statut === 'EN_ATTENTE') {
+                <div class="action-group">
+                  <button class="btn btn-gold btn-sm" (click)="updateStatus(request.id, 'ACCEPTEE')">Accepter la demande</button>
+                  <button class="btn btn-outline-danger btn-sm" (click)="updateStatus(request.id, 'REFUSEE')">Refuser</button>
+                </div>
+              } @else if (request.statut === 'ACCEPTEE') {
+                <div class="action-group">
+                  <button class="btn btn-primary btn-sm" [routerLink]="['/conversations', request.conversationId]">
+                    <span class="icon">💬</span> Ouvrir la conversation
+                  </button>
+                  <button class="btn btn-outline btn-sm" [routerLink]="['/mentors', request.alumniId]">Voir mon profil mentor</button>
+                </div>
+              }
+            </ng-container>
+
+            <!-- Student (Outgoing) Actions -->
+            <ng-container *ngIf="userType === 'ETUDIANT'">
+              <div class="action-group">
+                @if (request.statut === 'ACCEPTEE') {
+                  <button class="btn btn-primary btn-sm" [routerLink]="['/conversations', request.conversationId]">
+                    <span class="icon">💬</span> Lancer la discussion
+                  </button>
+                }
+                <button class="btn btn-outline btn-sm" [routerLink]="['/mentors', request.alumniId]">
+                  Voir le profil du mentor
+                </button>
+              </div>
+            </ng-container>
+          </div>
+        </article>
+      } @empty {
+        <div class="empty-requests card-surface">
+          <div class="empty-icon">✉️</div>
+          <h3>Aucune demande pour le moment</h3>
+          <p>
+            {{ userType === 'ALUMNI' 
+              ? 'Vous n\'avez pas encore reçu de demande de mentorat. Assurez-vous d\'avoir activé votre disponibilité sur votre profil.' 
+              : 'Commencez par explorer la liste des alumni et trouvez un mentor qui correspond à vos aspirations professionnelles.' }}
+          </p>
+          <div class="empty-actions">
+            <button *ngIf="userType === 'ETUDIANT'" class="btn btn-gold" routerLink="/mentors">Explorer les mentors</button>
+            <button *ngIf="userType === 'ALUMNI'" class="btn btn-primary" routerLink="/profile">Voir mon profil</button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

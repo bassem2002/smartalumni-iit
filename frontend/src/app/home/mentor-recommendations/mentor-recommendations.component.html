@@ -1,0 +1,73 @@
+<section class="recommendations-section animate-fade-in">
+  <div class="section-header">
+    <div class="header-content">
+      <h2 class="section-title">Mentors recommandés pour vous</h2>
+      <p class="section-subtitle">Notre IA analyse votre profil pour vous suggérer les meilleurs accompagnements.</p>
+    </div>
+    <button (click)="generate()" [disabled]="generating || loading" class="btn btn-primary">
+      <span *ngIf="!generating">✨ Générer de nouvelles recommandations</span>
+      <span *ngIf="generating">Génération en cours...</span>
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Recherche des meilleurs mentors...</p>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && !error && recommendations.length === 0" class="empty-state card">
+    <div class="icon">🔍</div>
+    <h3>Aucune recommandation pour le moment</h3>
+    <p>Cliquez sur le bouton ci-dessus pour que notre IA analyse votre profil et vous suggère des mentors.</p>
+  </div>
+
+  <div *ngIf="!loading && recommendations.length > 0" class="recommendations-grid">
+    <article class="mentor-card glass" *ngFor="let rec of recommendations">
+      <div class="card-header">
+        <div class="avatar-container">
+          <img *ngIf="rec.alumniPhoto" [src]="rec.alumniPhoto" [alt]="rec.alumniNom" class="avatar">
+          <div *ngIf="!rec.alumniPhoto" class="avatar-placeholder">{{ getInitials(rec) }}</div>
+          <div class="match-badge">
+            <span class="score">{{ rec.scoreMatching }}%</span>
+            <span class="label">Match</span>
+          </div>
+        </div>
+        <div class="mentor-info">
+          <h3>{{ rec.alumniPrenom }} {{ rec.alumniNom }}</h3>
+          <p class="role">{{ rec.posteActuel || 'Expert' }}</p>
+          <p class="company">{{ rec.entreprise || 'Freelance' }}</p>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="info-tags">
+          <span class="tag" *ngIf="rec.secteur">
+            <i class="icon">💼</i> {{ rec.secteur }}
+          </span>
+          <span class="tag" *ngIf="rec.pays">
+            <i class="icon">📍</i> {{ rec.pays }}
+          </span>
+        </div>
+        
+        <div class="skills-section" *ngIf="rec.competences">
+          <span class="skill-badge" *ngFor="let skill of rec.competences.split(',')">
+            {{ skill.trim() }}
+          </span>
+        </div>
+
+        <div class="reason-box">
+          <p class="reason-title">Pourquoi ce mentor ?</p>
+          <p class="reason-text">{{ rec.raison }}</p>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <a [routerLink]="['/mentors', rec.alumniId]" class="btn btn-outline btn-full">Voir le profil complet</a>
+      </div>
+    </article>
+  </div>
+</section>

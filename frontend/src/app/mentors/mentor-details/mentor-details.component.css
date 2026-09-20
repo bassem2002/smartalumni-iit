@@ -1,0 +1,564 @@
+.mentor-details-page {
+  padding-top: 2rem;
+  padding-bottom: 5rem;
+}
+
+/* Navigation */
+.details-nav {
+  margin-bottom: 2rem;
+}
+
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--iit-blue);
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: transform 0.2s ease;
+}
+
+.btn-back:hover {
+  transform: translateX(-5px);
+  color: var(--iit-blue-dark);
+}
+
+/* Layout */
+.mentor-layout {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+/* Sidebar */
+.mentor-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.mentor-main-card {
+  overflow: hidden;
+  background: white;
+}
+
+.mentor-header-bg {
+  height: 100px;
+  background: linear-gradient(135deg, var(--iit-blue) 0%, var(--iit-blue-dark) 100%);
+}
+
+.mentor-header-body {
+  padding: 0 2rem 2rem;
+  margin-top: -50px;
+  text-align: center;
+}
+
+.mentor-avatar-container {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 1.5rem;
+  border-radius: 24px;
+  border: 4px solid white;
+  background: white;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.mentor-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mentor-initials {
+  width: 100%;
+  height: 100%;
+  background: var(--iit-card-soft);
+  color: var(--iit-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+.mentor-info-header h1 {
+  font-size: 1.75rem;
+  margin: 0 0 0.5rem;
+  color: var(--iit-text);
+}
+
+.badge-role {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 800;
+  background: rgba(217, 164, 0, 0.1);
+  color: var(--iit-gold-dark);
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  vertical-align: middle;
+  margin-left: 0.5rem;
+}
+
+.mentor-job-title {
+  font-size: 1.1rem;
+  color: var(--iit-blue);
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.mentor-company-name {
+  font-size: 1rem;
+  color: var(--iit-muted);
+  margin-bottom: 1.5rem;
+}
+
+.mentor-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: var(--iit-card-soft);
+  color: var(--iit-muted);
+  margin-bottom: 2rem;
+}
+
+.mentor-status-badge.available {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--iit-success);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--iit-muted);
+}
+
+.available .status-dot {
+  background-color: var(--iit-success);
+}
+
+.mentor-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--iit-border);
+}
+
+.mentor-quick-meta {
+  padding: 1.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.meta-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+}
+
+.meta-label {
+  color: var(--iit-muted);
+  font-weight: 500;
+}
+
+.meta-value {
+  color: var(--iit-text);
+  font-weight: 700;
+}
+
+/* Why Mentor Card */
+.why-mentor-card {
+  padding: 2rem;
+  background: white;
+}
+
+.why-mentor-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  color: var(--iit-blue);
+}
+
+.why-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.why-list li {
+  display: flex;
+  gap: 1rem;
+}
+
+.why-icon {
+  font-size: 1.5rem;
+  width: 44px;
+  height: 44px;
+  background: var(--iit-card-soft);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.why-text strong {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--iit-text);
+  margin-bottom: 0.15rem;
+}
+
+.why-text p {
+  font-size: 0.8rem;
+  color: var(--iit-muted);
+  margin: 0;
+}
+
+/* Main Content */
+.mentor-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.content-card {
+  padding: 2.5rem;
+  background: white;
+}
+
+.content-card .card-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--iit-border);
+}
+
+.content-card .card-header .header-icon {
+  font-size: 1.5rem;
+}
+
+.content-card .card-header h2 {
+  font-size: 1.35rem;
+  color: var(--iit-blue);
+  margin: 0;
+}
+
+.bio-text, .exp-text {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--iit-text);
+  white-space: pre-wrap;
+}
+
+.skills-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.skill-pill {
+  background: var(--iit-card-soft);
+  color: var(--iit-blue);
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* Timeline */
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.timeline-item {
+  display: flex;
+  gap: 1.5rem;
+  position: relative;
+}
+
+.timeline-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 24px;
+  bottom: -24px;
+  width: 2px;
+  background: var(--iit-border);
+}
+
+.timeline-marker {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--iit-blue);
+  border: 3px solid white;
+  box-shadow: 0 0 0 2px var(--iit-blue);
+  z-index: 2;
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+
+.timeline-info h4 {
+  font-size: 1.15rem;
+  margin: 0 0 0.25rem;
+}
+
+.institution {
+  color: var(--iit-blue);
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.date {
+  font-size: 0.9rem;
+  color: var(--iit-muted);
+}
+
+.no-data {
+  color: var(--iit-muted);
+  font-style: italic;
+}
+
+/* Modal */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.modal-card {
+  background: white;
+  width: 90%;
+  max-width: 560px;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+}
+
+.modal-header {
+  padding: 1.5rem 2rem;
+  background: var(--iit-card-soft);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  font-size: 1.25rem;
+  margin: 0;
+  color: var(--iit-blue);
+}
+
+.btn-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--iit-muted);
+}
+
+.modal-body {
+  padding: 2rem;
+}
+
+.mentor-mini-profile {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: var(--iit-card-soft);
+  border-radius: 12px;
+}
+
+.mini-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.mini-info strong {
+  display: block;
+  font-size: 1rem;
+}
+
+.mini-info span {
+  font-size: 0.85rem;
+  color: var(--iit-muted);
+}
+
+.instruction {
+  font-size: 0.95rem;
+  color: var(--iit-muted);
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+}
+
+.form-input {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid var(--iit-border);
+  border-radius: 12px;
+  font-size: 1rem;
+  resize: none;
+}
+
+.modal-footer {
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  background: var(--iit-card-soft);
+}
+
+/* Success Toast */
+.success-toast {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: var(--iit-blue);
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  z-index: 3000;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .mentor-layout {
+    grid-template-columns: 1fr;
+  }
+  
+  .mentor-sidebar {
+    order: 2;
+  }
+  
+  .mentor-content {
+    order: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .mentor-header-body {
+    padding: 0 1.5rem 1.5rem;
+  }
+  
+  .content-card {
+    padding: 1.5rem;
+  }
+}
+
+    .timeline-desc {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Modal Styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(15, 23, 42, 0.35);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+    }
+
+    .modal-content {
+      width: 100%;
+      max-width: 500px;
+      padding: 2.5rem;
+      border-radius: 24px;
+      position: relative;
+      background: #ffffff;
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.12);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      color: var(--text-main);
+      font-size: 2rem;
+      cursor: pointer;
+    }
+
+    .modal-body textarea {
+      width: 100%;
+      background: #ffffff;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 12px;
+      padding: 1rem;
+      color: var(--text-main);
+      outline: none;
+      margin-top: 1rem;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      background: #10b981;
+      color: white;
+      font-weight: 600;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.18);
+      z-index: 3000;
+    }
+
+    @media (max-width: 900px) {
+      .profile-layout {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        order: 1;
+      }
+      .main-content {
+        order: 2;
+      }
+    }

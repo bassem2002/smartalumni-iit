@@ -1,0 +1,94 @@
+<div class="auth-page-wrapper animate-fade-in">
+  <!-- Left Side: Hero Info -->
+  <div class="auth-hero-side">
+    <div class="auth-hero-content">
+      <div class="brand-badge">SmartAlumni IIT</div>
+      <h1>Connectez-vous à votre espace Alumni & Mentorat</h1>
+      <p class="hero-description">Rejoignez la communauté intelligente de l'IIT pour booster votre carrière ou partager votre expertise.</p>
+      
+      <ul class="benefits-list">
+        <li>
+          <div class="benefit-icon">🔍</div>
+          <div class="benefit-text">
+            <strong>Trouver un mentor</strong>
+            <span>Bénéficiez de l'expérience des anciens de l'IIT.</span>
+          </div>
+        </li>
+        <li>
+          <div class="benefit-icon">👤</div>
+          <div class="benefit-text">
+            <strong>Gérer son profil</strong>
+            <span>Mettez en avant votre parcours académique et pro.</span>
+          </div>
+        </li>
+        <li>
+          <div class="benefit-icon">✉️</div>
+          <div class="benefit-text">
+            <strong>Suivre vos échanges</strong>
+            <span>Gérez vos demandes et messages en un clic.</span>
+          </div>
+        </li>
+      </ul>
+
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-value">500+</span>
+          <span class="stat-label">Alumni</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value">120+</span>
+          <span class="stat-label">Mentors</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value">1000+</span>
+          <span class="stat-label">Étudiants</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Side: Form -->
+  <div class="auth-form-side">
+    <div class="auth-card-container">
+      <div class="form-header">
+        <h2>Bienvenue</h2>
+        <p>Entrez vos identifiants pour accéder à la plateforme</p>
+      </div>
+
+      <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="auth-form">
+        <div class="input-group">
+          <label>Adresse Email</label>
+          <input type="email" name="email" [(ngModel)]="credentials.email" placeholder="votre.nom@iit.ens.tn" required>
+        </div>
+        
+        <div class="input-group">
+          <label>Mot de passe</label>
+          <input type="password" name="motDePasse" [(ngModel)]="credentials.motDePasse" placeholder="••••••••" required>
+        </div>
+
+        @if (error) {
+          <div class="error-alert">
+            <span class="error-icon">⚠️</span>
+            <span class="error-text">{{ error }}</span>
+          </div>
+        }
+
+        <div class="form-actions">
+          <label class="remember-me">
+            <input type="checkbox" name="rememberMe" [(ngModel)]="rememberMe"> Se souvenir de moi
+          </label>
+          <a href="#" class="forgot-link">Mot de passe oublié ?</a>
+        </div>
+
+        <button type="submit" [disabled]="!loginForm.form.valid" class="btn btn-primary w-full">
+          Se connecter
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        <p>Pas encore de compte ? <a routerLink="/register" class="signup-link">Créer un compte</a></p>
+        <a routerLink="/home" class="back-home">← Retour à l'accueil</a>
+      </div>
+    </div>
+  </div>
+</div>

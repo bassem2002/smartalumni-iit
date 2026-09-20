@@ -1,0 +1,128 @@
+<div class="container mentors-page-wrapper animate-fade-in">
+  <!-- Page Header -->
+  <header class="mentors-header">
+    <div class="header-content">
+      <div class="brand-badge">Réseau Alumni IIT</div>
+      <h1>Trouver un <span>Mentor</span></h1>
+      <p class="header-subtitle">Connectez-vous avec des alumni IIT selon votre spécialité, secteur et objectifs pour booster votre carrière.</p>
+    </div>
+    <div class="header-actions">
+      <a routerLink="/mentorship-requests" class="btn btn-outline">
+        <span>Voir mes demandes</span>
+        <span class="btn-icon">→</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Search & Filters -->
+  <section class="filters-section card-surface">
+    <div class="filters-grid">
+      <div class="input-group">
+        <label>Recherche par mots-clés</label>
+        <div class="search-input-wrapper">
+          <span class="search-icon">🔍</span>
+          <input type="text" [(ngModel)]="filters.keyword" (input)="onSearch()" placeholder="Nom, entreprise, compétences...">
+        </div>
+      </div>
+      
+      <div class="input-group">
+        <label>Secteur d'activité</label>
+        <select [(ngModel)]="filters.secteur" (change)="onSearch()" class="custom-select">
+          <option value="">Tous les secteurs</option>
+          <option value="IT">Informatique & Logiciel</option>
+          <option value="Finance">Finance & Banque</option>
+          <option value="Management">Management & RH</option>
+          <option value="Industry">Industrie & Ingénierie</option>
+          <option value="Energy">Énergie</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label>Pays</label>
+        <input type="text" [(ngModel)]="filters.pays" (input)="onSearch()" placeholder="Tunisie, France, etc.">
+      </div>
+
+      <div class="filter-actions-row">
+        <button class="btn btn-primary" (click)="onSearch()">
+          Rechercher
+        </button>
+        <button class="btn btn-outline" (click)="resetFilters()">
+          Réinitialiser
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Results Section -->
+  <main class="results-section">
+    @if (loading) {
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Recherche des meilleurs mentors pour vous...</p>
+      </div>
+    } @else {
+      <div class="mentors-grid">
+        @for (mentor of mentors; track mentor.id) {
+          <article class="mentor-card-modern card-surface">
+            <div class="mentor-card-header">
+              <div class="mentor-avatar-box">
+                @if (mentor.photo) {
+                  <img [src]="mentor.photo" alt="Photo de {{ mentor.prenom }}" class="mentor-img">
+                } @else {
+                  <div class="mentor-avatar-placeholder">
+                    {{ mentor.prenom[0] }}{{ mentor.nom[0] }}
+                  </div>
+                }
+                <span class="status-indicator" [class.available]="mentor.disponibleMentorat" 
+                      [title]="mentor.disponibleMentorat ? 'Disponible pour mentorat' : 'Non disponible'">
+                </span>
+              </div>
+              <div class="mentor-basic-info">
+                <div class="mentor-name-row">
+                  <h3>{{ mentor.prenom }} {{ mentor.nom }}</h3>
+                  <span class="badge-role">Alumni</span>
+                </div>
+                <p class="mentor-job">{{ mentor.posteActuel || 'Poste non renseigné' }}</p>
+                <p class="mentor-company">
+                  <span class="icon">🏢</span> {{ mentor.entreprise || 'Non renseigné' }}
+                </p>
+              </div>
+            </div>
+            
+            <div class="mentor-card-body">
+              <div class="mentor-meta-info">
+                <span class="meta-item"><span class="icon">🌍</span> {{ mentor.pays || 'Non renseigné' }}</span>
+                <span class="meta-item"><span class="icon">📁</span> {{ mentor.secteur || 'Non renseigné' }}</span>
+              </div>
+              
+              <div class="mentor-skills">
+                @for (skill of getSkills(mentor.competences); track skill) {
+                  <span class="skill-badge">{{ skill }}</span>
+                }
+                @if (!mentor.competences) {
+                  <span class="no-data">Aucune compétence renseignée</span>
+                }
+              </div>
+            </div>
+
+            <div class="mentor-card-footer">
+              <a [routerLink]="['/mentors', mentor.id]" class="btn btn-outline btn-sm w-full">Voir profil</a>
+              <button class="btn btn-gold btn-sm w-full" 
+                      [routerLink]="['/mentors', mentor.id]" 
+                      [disabled]="!mentor.disponibleMentorat">
+                Demander mentorat
+              </button>
+            </div>
+          </article>
+        } @empty {
+          <div class="empty-results card-surface">
+            <div class="empty-icon">🔎</div>
+            <h3>Aucun mentor trouvé</h3>
+            <p>Essayez d'élargir vos critères de recherche ou de réinitialiser les filtres.</p>
+            <button class="btn btn-primary" (click)="resetFilters()">Afficher tous les mentors</button>
+          </div>
+        }
+      </div>
+    }
+  </main>
+</div>

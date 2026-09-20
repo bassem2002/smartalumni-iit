@@ -1,0 +1,190 @@
+<div class="auth-page-wrapper animate-fade-in">
+  <!-- Left Side: Info & Roles -->
+  <div class="auth-hero-side">
+    <div class="auth-hero-content">
+      <div class="brand-badge">Rejoindre SmartAlumni IIT</div>
+      <h1>Créez votre compte et intégrez le réseau</h1>
+      <p class="hero-description">Une plateforme dédiée à la réussite des étudiants et au rayonnement des diplômés de l'IIT.</p>
+      
+      <div class="role-cards">
+        <div class="role-card">
+          <div class="role-icon">🎓</div>
+          <div class="role-info">
+            <h3>Étudiant</h3>
+            <p>Trouvez un mentor, obtenez des conseils sur votre carrière et optimisez votre CV avec l'IA.</p>
+          </div>
+        </div>
+        
+        <div class="role-card">
+          <div class="role-icon">💼</div>
+          <div class="role-info">
+            <h3>Alumni</h3>
+            <p>Partagez votre expertise, accompagnez les futurs diplômés et restez connecté à votre école.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="auth-footer-info">
+        <p>En rejoignant la plateforme, vous acceptez nos conditions d'utilisation et notre politique de confidentialité.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Side: Form -->
+  <div class="auth-form-side">
+    <div class="register-card-container">
+      <div class="form-header">
+        <h2>Inscription</h2>
+        <p>Complétez les informations ci-dessous pour créer votre profil</p>
+      </div>
+
+      <form (ngSubmit)="onSubmit()" #registerForm="ngForm" class="auth-form">
+        <!-- Section: Informations Personnelles -->
+        <div class="form-section">
+          <div class="section-title">Informations Personnelles</div>
+          <div class="grid-2">
+            <div class="input-group">
+              <label>Prénom *</label>
+              <input type="text" name="prenom" [(ngModel)]="userData.prenom" placeholder="Ex: Jean" required>
+            </div>
+            <div class="input-group">
+              <label>Nom *</label>
+              <input type="text" name="nom" [(ngModel)]="userData.nom" placeholder="Ex: Dupont" required>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label>Adresse Email (IIT) *</label>
+            <input type="email" name="email" [(ngModel)]="userData.email" placeholder="nom.prenom@iit.ens.tn" required>
+            @if (userData.email && !isEmailValid()) {
+              <span class="field-error">⚠ L'email doit se terminer par &#64;iit.ens.tn</span>
+            }
+          </div>
+        </div>
+
+        <!-- Section: Profil Académique -->
+        <div class="form-section">
+          <div class="section-title">Profil & Études</div>
+          <div class="input-group">
+            <label>Type de profil *</label>
+            <select name="typeProfil" [(ngModel)]="userData.typeProfil" required class="custom-select">
+              <option value="" disabled selected>Choisissez votre profil</option>
+              <option value="ETUDIANT">Étudiant</option>
+              <option value="ALUMNI">Alumni</option>
+            </select>
+          </div>
+
+          <div class="grid-2">
+            <div class="input-group">
+              <label>Filière *</label>
+              <select name="filiere" [(ngModel)]="userData.filiere" (ngModelChange)="onFiliereChange()" required class="custom-select">
+                <option value="" disabled selected>Sélectionnez votre filière</option>
+                @for (f of filieres; track f) {
+                  <option [value]="f">{{ f }}</option>
+                }
+              </select>
+            </div>
+            <div class="input-group">
+              <label>Spécialité *</label>
+              <select name="specialite" [(ngModel)]="userData.specialite" required class="custom-select" [disabled]="!userData.filiere">
+                <option value="" disabled selected>Sélectionnez votre spécialité</option>
+                @for (s of specialites; track s) {
+                  <option [value]="s">{{ s }}</option>
+                }
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section: Informations Professionnelles (Alumni only) -->
+        @if (userData.typeProfil === 'ALUMNI') {
+          <div class="form-section animate-fade-in">
+            <div class="section-title">Parcours Professionnel</div>
+            <div class="grid-2">
+              <div class="input-group">
+                <label>Poste Actuel *</label>
+                <input type="text" name="posteActuel" [(ngModel)]="userData.posteActuel" placeholder="Ex: Ingénieur Logiciel" required>
+              </div>
+              <div class="input-group">
+                <label>Entreprise *</label>
+                <input type="text" name="entreprise" [(ngModel)]="userData.entreprise" placeholder="Ex: Google" required>
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div class="input-group">
+                <label>Secteur d'activité *</label>
+                <input type="text" name="secteur" [(ngModel)]="userData.secteur" placeholder="Ex: Informatique" required>
+              </div>
+              <div class="input-group">
+                <label>Pays de résidence *</label>
+                <input type="text" name="pays" [(ngModel)]="userData.pays" placeholder="Ex: Tunisie" required>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Section: Documents & Sécurité -->
+        <div class="form-section">
+          <div class="section-title">Documents & Sécurité</div>
+          <div class="input-group">
+            <label>Votre CV (PDF/Word) *</label>
+            <div class="cv-upload-area" (click)="cvInput.click()">
+              <input type="file" #cvInput (change)="onCvSelected($event)" accept=".pdf,.doc,.docx" style="display:none;">
+              @if (cvFileName) {
+                <div class="cv-file-info">
+                  <span class="cv-icon">📄</span>
+                  <span class="cv-name">{{ cvFileName }}</span>
+                  <span class="cv-check">✓</span>
+                </div>
+              } @else {
+                <div class="cv-placeholder">
+                  <span class="cv-upload-icon">📤</span>
+                  <span>Cliquez pour télécharger votre CV</span>
+                  <span class="cv-hint">Formats acceptés : PDF, DOC, DOCX</span>
+                </div>
+              }
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="input-group">
+              <label>Mot de passe *</label>
+              <input type="password" name="motDePasse" [(ngModel)]="userData.motDePasse" placeholder="••••••••" required minlength="8">
+            </div>
+            <div class="input-group">
+              <label>Confirmer *</label>
+              <input type="password" name="confirmPassword" [(ngModel)]="confirmPassword" placeholder="••••••••" required>
+            </div>
+          </div>
+          @if (confirmPassword && userData.motDePasse !== confirmPassword) {
+            <span class="field-error">⚠ Les mots de passe ne correspondent pas</span>
+          }
+        </div>
+
+        @if (error) {
+          <div class="error-alert">
+            <span class="error-icon">⚠️</span>
+            <span class="error-text">{{ error }}</span>
+          </div>
+        }
+
+        <div class="form-check-group">
+          <label class="checkbox-label">
+            <input type="checkbox" name="terms" [(ngModel)]="termsAccepted" required> 
+            J'accepte les <a href="#">Conditions d'utilisation</a>
+          </label>
+        </div>
+
+        <button type="submit" [disabled]="!isFormValid()" class="btn btn-primary w-full">
+          Créer mon compte
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        <p>Vous avez déjà un compte ? <a routerLink="/login" class="login-link">Se connecter</a></p>
+        <a routerLink="/home" class="back-home">← Retour à l'accueil</a>
+      </div>
+    </div>
+  </div>
+</div>

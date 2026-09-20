@@ -1,0 +1,162 @@
+<div class="home-wrapper">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container hero-container">
+      <div class="hero-content animate-fade-in">
+        <div class="hero-badge">Plateforme Officielle SmartAlumni IIT</div>
+        <h1 class="hero-title">Connectez le Présent au <span>Futur Professionnel</span></h1>
+        <p class="hero-subtitle">La plateforme intelligente qui connecte étudiants et anciens de l’IIT pour le mentorat, l’orientation et l’insertion professionnelle.</p>
+        
+        <div class="hero-actions">
+          @if (!isAuthenticated) {
+            <a routerLink="/register" class="btn btn-gold btn-lg">Devenir Mentor / Trouver un mentor</a>
+            <a routerLink="/login" class="btn btn-outline btn-lg">Se connecter</a>
+          } @else {
+            <a routerLink="/mentors" class="btn btn-gold btn-lg">Explorer les Mentors</a>
+            <a routerLink="/profile" class="btn btn-outline btn-lg">Mon Profil</a>
+          }
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-box">
+            <span class="stat-num">500+</span>
+            <span class="stat-txt">Alumni Actifs</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-num">150+</span>
+            <span class="stat-txt">Mentors Experts</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-num">98%</span>
+            <span class="stat-txt">Satisfaction</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="hero-visual animate-fade-in">
+        <div class="visual-card main-card">
+          <div class="card-icon">🤖</div>
+          <div class="card-info">
+            <strong>Analyse de CV IA</strong>
+            <span>Optimisation intelligente de votre profil</span>
+          </div>
+        </div>
+        <div class="visual-card secondary-card">
+          <div class="card-icon">🤝</div>
+          <div class="card-info">
+            <strong>Matching Mentorat</strong>
+            <span>Trouvez le mentor idéal selon vos objectifs</span>
+          </div>
+        </div>
+        <div class="hero-decoration"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recommended Mentors (Only for logged-in students) -->
+  <div class="container recommendation-container" *ngIf="isAuthenticated && isStudent">
+    <app-mentor-recommendations></app-mentor-recommendations>
+  </div>
+
+  <!-- Features Section -->
+  <section id="features" class="features-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Pourquoi rejoindre SmartAlumni ?</h2>
+        <p class="section-subtitle">Une suite d'outils intelligents pour accompagner votre parcours professionnel</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card-modern">
+          <div class="feature-icon">👤</div>
+          <h3>Gestion des profils</h3>
+          <p>Mise en avant de votre parcours académique et professionnel auprès du réseau.</p>
+        </div>
+        <div class="feature-card-modern">
+          <div class="feature-icon">🤝</div>
+          <h3>Mentorat Étudiant-Alumni</h3>
+          <p>Des échanges directs et constructifs pour guider vos choix de carrière.</p>
+        </div>
+        <div class="feature-card-modern">
+          <div class="feature-icon">📄</div>
+          <h3>Analyse de CV</h3>
+          <p>Utilisez notre IA pour analyser et améliorer votre CV en temps réel.</p>
+        </div>
+        <div class="feature-card-modern">
+          <div class="feature-icon">✨</div>
+          <h3>Recommandations</h3>
+          <p>Algorithme intelligent suggérant les mentors les plus pertinents pour vous.</p>
+        </div>
+        <div class="feature-card-modern">
+          <div class="feature-icon">💬</div>
+          <h3>Messagerie intégrée</h3>
+          <p>Communiquez facilement et en toute sécurité avec vos mentors ou mentorés.</p>
+        </div>
+        <div class="feature-card-modern">
+          <div class="feature-icon">📊</div>
+          <h3>Dashboard Admin</h3>
+          <p>Outils de suivi et de gestion pour les administrateurs de la plateforme.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it Works Section -->
+  <section class="workflow-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Comment ça marche ?</h2>
+        <p class="section-subtitle">Un parcours simple pour booster votre avenir</p>
+      </div>
+
+      <div class="workflow-steps">
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h3>Créer un compte</h3>
+            <p>Inscrivez-vous en tant qu'étudiant ou alumni de l'IIT.</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h3>Compléter son profil</h3>
+            <p>Ajoutez vos compétences et téléchargez votre CV.</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h3>Trouver un mentor</h3>
+            <p>Explorez les profils ou suivez nos recommandations IA.</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h3>Échanger & Suivre</h3>
+            <p>Envoyez vos demandes et commencez votre mentorat.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="cta-final">
+    <div class="container">
+      <div class="cta-card">
+        <h2>Prêt à rejoindre le réseau SmartAlumni IIT ?</h2>
+        <p>Ne restez pas seul face à votre avenir. Le réseau IIT est là pour vous.</p>
+        <div class="cta-btns">
+          @if (!isAuthenticated) {
+            <a routerLink="/register" class="btn btn-gold btn-lg">Créer un compte maintenant</a>
+            <a routerLink="/login" class="btn btn-outline-white btn-lg">Se connecter</a>
+          } @else {
+            <a routerLink="/mentors" class="btn btn-gold btn-lg">Explorer la plateforme</a>
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

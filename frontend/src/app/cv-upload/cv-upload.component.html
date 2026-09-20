@@ -1,0 +1,217 @@
+<div class="container cv-page-wrapper animate-fade-in">
+  
+  <!-- Step Progress Indicator -->
+  <div class="cv-steps-indicator">
+    <div class="step" [class.active]="!cv" [class.completed]="cv">
+      <div class="step-num">1</div>
+      <span>Upload</span>
+    </div>
+    <div class="step-line"></div>
+    <div class="step" [class.active]="cv && !hasAnalysisData()" [class.completed]="cv && hasAnalysisData()">
+      <div class="step-num">2</div>
+      <span>Analyse</span>
+    </div>
+    <div class="step-line"></div>
+    <div class="step" [class.active]="cv && hasAnalysisData()" [class.completed]="validating">
+      <div class="step-num">3</div>
+      <span>Validation</span>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="cv-main-layout">
+    
+    <!-- Left Panel: CV Management -->
+    <div class="cv-panel-left">
+      
+      <!-- Card: Upload / Current CV -->
+      <div class="cv-card">
+        <div class="card-header">
+          <div class="header-icon">📄</div>
+          <h2>Mon Curriculum Vitae</h2>
+        </div>
+        
+        <div class="card-body">
+          <!-- State: No CV -->
+          <div *ngIf="!cv && !loading" class="empty-upload-state">
+            <div class="upload-illustration">📤</div>
+            <h3>Aucun CV enregistré</h3>
+            <p>Uploadez votre CV (PDF, DOC, DOCX) pour que notre IA puisse extraire vos informations professionnelles.</p>
+            
+            <label for="cv-file-new" class="btn btn-gold" [class.disabled]="uploading">
+              Choisir un fichier
+            </label>
+            <input type="file" id="cv-file-new" (change)="onFileSelected($event)" accept=".pdf,.doc,.docx" [disabled]="uploading" hidden>
+            
+            <div *ngIf="selectedFile" class="file-preview-box">
+              <div class="file-info">
+                <span class="file-name">{{ selectedFile.name }}</span>
+                <span class="file-size">{{ (selectedFile.size / 1024).toFixed(1) }} KB</span>
+              </div>
+              <button (click)="uploadCV()" class="btn btn-primary w-full" [disabled]="uploading">
+                <span *ngIf="!uploading">Lancer le téléversement</span>
+                <span *ngIf="uploading">Envoi en cours...</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- State: CV Exists -->
+          <div *ngIf="cv" class="current-cv-box">
+            <div class="cv-file-card">
+              <div class="file-icon">📄</div>
+              <div class="file-details">
+                <h3>{{ cv.nomFichier }}</h3>
+                <p>Déposé le {{ formatDate(cv.dateDepot) }}</p>
+                <div class="status-tags">
+                  <span class="tag" [class.success]="cv.contenuExtrait" [class.warning]="!cv.contenuExtrait">
+                    {{ cv.contenuExtrait ? 'Texte extrait' : 'Texte manquant' }}
+                  </span>
+                  <span *ngIf="hasAnalysisData()" class="tag analyzed">Analysé</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="cv-actions-grid">
+              <button (click)="analyzeCV()" class="btn btn-primary" [disabled]="analyzing || uploading">
+                <span *ngIf="!analyzing">Analyser le CV</span>
+                <span *ngIf="analyzing">Analyse...</span>
+              </button>
+              
+              <label for="cv-file-replace" class="btn btn-outline" [class.disabled]="uploading">
+                Remplacer
+              </label>
+              <input type="file" id="cv-file-replace" (change)="onFileSelected($event)" accept=".pdf,.doc,.docx" [disabled]="uploading" hidden>
+              
+              <button (click)="confirmDelete()" class="btn btn-outline-danger" [disabled]="deleting">
+                Supprimer
+              </button>
+            </div>
+
+            <!-- Replacement Preview -->
+            <div *ngIf="selectedFile" class="replacement-preview animate-fade-in">
+              <div class="alert alert-info">
+                Nouveau fichier : <strong>{{ selectedFile.name }}</strong>
+              </div>
+              <div class="flex gap-2">
+                <button (click)="uploadCV()" class="btn btn-gold btn-sm" [disabled]="uploading">Confirmer</button>
+                <button (click)="cancelReplace()" class="btn btn-outline btn-sm">Annuler</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Error Message -->
+          <div *ngIf="errorMessage" class="alert alert-danger mt-4">
+            {{ errorMessage }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Card: Instructions / Tip -->
+      <div class="cv-card tip-card">
+        <div class="card-body">
+          <div class="tip-icon">💡</div>
+          <div class="tip-content">
+            <h4>Conseil d'expert</h4>
+            <p>Un CV bien structuré permet à notre IA d'extraire plus précisément vos compétences. Assurez-vous que votre fichier est lisible.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Panel: Extraction Results & Validation -->
+    <div class="cv-panel-right">
+      
+      <!-- State: No Analysis Yet -->
+      <div *ngIf="cv && !hasAnalysisData()" class="empty-results-state card">
+        <div class="illustration">🔍</div>
+        <h3>Prêt pour l'analyse</h3>
+        <p>Cliquez sur "Analyser le CV" pour extraire les données et pré-remplir votre profil.</p>
+      </div>
+
+      <!-- State: Analysis Results -->
+      <div *ngIf="cv && hasAnalysisData()" class="cv-card validation-card animate-fade-in">
+        <div class="card-header">
+          <div class="header-icon">✨</div>
+          <h2>Résultats de l'Analyse</h2>
+        </div>
+        
+        <div class="card-body">
+          <div class="validation-note">
+            Les données ci-dessous ont été détectées par l'IA. <strong>Vérifiez et corrigez-les</strong> avant de mettre à jour votre profil.
+          </div>
+
+          <form (ngSubmit)="validateAndUpdateProfile()" class="validation-form">
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Poste détecté</label>
+                <input type="text" [(ngModel)]="editData.posteActuel" name="poste" class="form-input" placeholder="Ex: Développeur Fullstack">
+                <span *ngIf="!editData.posteActuel" class="field-hint">Non détecté - à compléter</span>
+              </div>
+              
+              <div class="form-group">
+                <label>Entreprise</label>
+                <input type="text" [(ngModel)]="editData.entreprise" name="entreprise" class="form-input" placeholder="Ex: Tech Solutions">
+              </div>
+
+              <div class="form-group">
+                <label>Secteur</label>
+                <input type="text" [(ngModel)]="editData.secteur" name="secteur" class="form-input" placeholder="Ex: Informatique">
+              </div>
+
+              <div class="form-group">
+                <label>Pays</label>
+                <input type="text" [(ngModel)]="editData.pays" name="pays" class="form-input" placeholder="Ex: Tunisie">
+              </div>
+
+              <div class="form-group full-width">
+                <label>Compétences (séparées par des virgules)</label>
+                <textarea [(ngModel)]="editData.competences" name="competences" class="form-input" rows="2" placeholder="Java, Angular, SQL..."></textarea>
+              </div>
+
+              <div class="form-group full-width">
+                <label>Expériences professionnelles</label>
+                <textarea [(ngModel)]="editData.experiences" name="experiences" class="form-input" rows="4" placeholder="Détaillez vos expériences..."></textarea>
+              </div>
+
+              <div class="form-group full-width">
+                <label>Formations & Études</label>
+                <textarea [(ngModel)]="editData.formations" name="formations" class="form-input" rows="3" placeholder="Diplômes, écoles..."></textarea>
+              </div>
+            </div>
+
+            <div class="validation-footer">
+              <button type="submit" class="btn btn-gold btn-lg w-full" [disabled]="validating">
+                <span *ngIf="!validating">Valider et mettre à jour mon profil</span>
+                <span *ngIf="validating">Mise à jour en cours...</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div class="modal-backdrop" *ngIf="showDeleteConfirm">
+    <div class="modal-card animate-fade-in">
+      <div class="modal-icon danger">⚠️</div>
+      <h3>Supprimer le CV ?</h3>
+      <p>Cette action est irréversible. Les données déjà validées sur votre profil ne seront pas supprimées.</p>
+      <div class="modal-actions">
+        <button (click)="deleteCV()" class="btn btn-danger" [disabled]="deleting">Confirmer la suppression</button>
+        <button (click)="cancelDelete()" class="btn btn-outline" [disabled]="deleting">Annuler</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Popup -->
+  <div class="popup-backdrop" *ngIf="showSuccessPopup">
+    <div class="popup-card animate-fade-in">
+      <div class="popup-icon">✓</div>
+      <h3>Profil mis à jour !</h3>
+      <p>Les données de votre CV ont été intégrées avec succès à votre profil SmartAlumni.</p>
+      <button type="button" class="btn btn-primary" (click)="onSuccessConfirm()">Voir mon profil</button>
+    </div>
+  </div>
+
+</div>

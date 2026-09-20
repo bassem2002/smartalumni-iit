@@ -1,0 +1,257 @@
+<div class="admin-dashboard-wrapper animate-fade-in">
+  <!-- Top Navigation / Header -->
+  <header class="admin-dashboard-header">
+    <div class="container header-content">
+      <div class="header-left">
+        <h1>Dashboard Administrateur</h1>
+        <p class="subtitle">Supervision de la plateforme SmartAlumni IIT</p>
+      </div>
+      <div class="header-right">
+        <div class="admin-profile">
+          <div class="admin-avatar">A</div>
+          <div class="admin-info">
+            <span class="admin-name">Administrateur</span>
+            <span class="admin-role">Super Admin</span>
+          </div>
+        </div>
+        <button (click)="logout()" class="btn-logout-modern" title="Déconnexion">
+          <i>🚪</i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container main-content">
+    <!-- Quick Stats Grid -->
+    <div class="stats-grid" *ngIf="!loadingStats && stats">
+      <div class="stat-card-modern">
+        <div class="stat-icon blue">👥</div>
+        <div class="stat-details">
+          <span class="stat-label">Total Utilisateurs</span>
+          <span class="stat-value">{{ stats.totalUtilisateurs }}</span>
+        </div>
+      </div>
+      <div class="stat-card-modern">
+        <div class="stat-icon green">🎓</div>
+        <div class="stat-details">
+          <span class="stat-label">Étudiants</span>
+          <span class="stat-value">{{ stats.totalEtudiants }}</span>
+        </div>
+      </div>
+      <div class="stat-card-modern">
+        <div class="stat-icon indigo">👨‍🎓</div>
+        <div class="stat-details">
+          <span class="stat-label">Alumni</span>
+          <span class="stat-value">{{ stats.totalAlumni }}</span>
+        </div>
+      </div>
+      <div class="stat-card-modern">
+        <div class="stat-icon gold">🌟</div>
+        <div class="stat-details">
+          <span class="stat-label">Mentors Actifs</span>
+          <span class="stat-value">{{ stats.totalMentorsDisponibles }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs Navigation -->
+    <nav class="dashboard-tabs card-surface">
+      <button class="tab-btn" [class.active]="activeTab === 'overview'" (click)="setTab('overview')">
+        <i>📊</i> Vue d'ensemble
+      </button>
+      <button class="tab-btn" [class.active]="activeTab === 'users'" (click)="setTab('users')">
+        <i>👥</i> Utilisateurs
+      </button>
+      <button class="tab-btn" [class.active]="activeTab === 'mentors'" (click)="setTab('mentors')">
+        <i>🤝</i> Mentors
+      </button>
+      <button class="tab-btn" [class.active]="activeTab === 'requests'" (click)="setTab('requests')">
+        <i>📝</i> Demandes
+        <span class="tab-badge" *ngIf="requests.length > 0">{{ requests.length }}</span>
+      </button>
+    </nav>
+
+    <!-- Tab Content: Overview -->
+    <div class="tab-content" *ngIf="activeTab === 'overview'">
+      <div class="grid-2 mt-4">
+        <!-- Chart Section -->
+        <div class="card-surface chart-section">
+          <div class="card-header">
+            <h3>Répartition des Alumni par Secteur</h3>
+          </div>
+          <div class="chart-wrapper">
+            <canvas #myChart></canvas>
+          </div>
+        </div>
+
+        <!-- Chatbot Section -->
+        <div class="chatbot-wrapper">
+          <app-admin-chatbot></app-admin-chatbot>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab Content: Users -->
+    <div class="tab-content" *ngIf="activeTab === 'users'">
+      <div class="card-surface mt-4">
+        <div class="table-header-controls">
+          <h3>Liste des Utilisateurs</h3>
+          <div class="filter-group">
+            <div class="search-box">
+              <input type="text" [(ngModel)]="searchQuery" placeholder="Rechercher un utilisateur..." class="form-input-sm">
+            </div>
+            <select [(ngModel)]="filterRole" class="form-select-sm">
+              <option value="">Tous les rôles</option>
+              <option value="ALUMNI">Alumni</option>
+              <option value="ETUDIANT">Étudiant</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="modern-table">
+            <thead>
+              <tr>
+                <th>Utilisateur</th>
+                <th>Email</th>
+                <th>Rôle</th>
+                <th>Spécialité / Poste</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of filteredUsers">
+                <td>
+                  <div class="user-cell">
+                    <div class="user-avatar-mini" [style.background-color]="'#1f4f97'">
+                      {{ getInitials(user) }}
+                    </div>
+                    <span class="user-name">{{ user.prenom }} {{ user.nom }}</span>
+                  </div>
+                </td>
+                <td><span class="email-text">{{ user.email }}</span></td>
+                <td>
+                  <span class="badge" [ngClass]="getBadgeClass(getUserRoleLabel(user))">
+                    {{ getUserRoleLabel(user) }}
+                  </span>
+                </td>
+                <td>
+                  <span class="meta-text">{{ user.posteActuel || user.specialite || 'Non renseigné' }}</span>
+                </td>
+                <td>
+                  <div class="table-actions">
+                    <button class="btn-icon-table" title="Voir profil">👁️</button>
+                    <button class="btn-icon-table danger" title="Désactiver">🚫</button>
+                  </div>
+                </td>
+              </tr>
+              <tr *ngIf="filteredUsers.length === 0">
+                <td colspan="5" class="empty-table-cell">Aucun utilisateur trouvé.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab Content: Mentors -->
+    <div class="tab-content" *ngIf="activeTab === 'mentors'">
+      <div class="card-surface mt-4">
+        <div class="table-header-controls">
+          <h3>Mentors Actifs</h3>
+        </div>
+        
+        <div class="table-responsive">
+          <table class="modern-table">
+            <thead>
+              <tr>
+                <th>Mentor</th>
+                <th>Entreprise</th>
+                <th>Secteur</th>
+                <th>Localisation</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let mentor of mentors">
+                <td>
+                  <div class="user-cell">
+                    <div class="user-avatar-mini" [style.background-color]="'#d9a400'">
+                      {{ getInitials(mentor) }}
+                    </div>
+                    <div>
+                      <div class="user-name">{{ mentor.prenom }} {{ mentor.nom }}</div>
+                      <div class="user-subtext">{{ mentor.posteActuel }}</div>
+                    </div>
+                  </div>
+                </td>
+                <td>{{ mentor.entreprise || 'Indépendant' }}</td>
+                <td><span class="badge badge-soft">{{ mentor.secteur || 'Divers' }}</span></td>
+                <td>{{ mentor.pays || 'Non renseigné' }}</td>
+                <td>
+                  <div class="table-actions">
+                    <button class="btn-icon-table" title="Voir détails">👁️</button>
+                  </div>
+                </td>
+              </tr>
+              <tr *ngIf="mentors.length === 0">
+                <td colspan="5" class="empty-table-cell">Aucun mentor actif pour le moment.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab Content: Requests -->
+    <div class="tab-content" *ngIf="activeTab === 'requests'">
+      <div class="mt-4">
+        <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+        <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+        <div class="requests-grid">
+          <div class="request-card card-surface animate-fade-in" *ngFor="let req of requests">
+            <div class="request-card-header">
+              <div class="user-avatar-lg">{{ req.prenom[0] }}{{ req.nom[0] }}</div>
+              <div class="request-user-info">
+                <h3>{{ req.prenom }} {{ req.nom }}</h3>
+                <p class="email">{{ req.email }}</p>
+              </div>
+              <span class="badge badge-warning">En attente</span>
+            </div>
+            
+            <div class="request-card-body">
+              <div class="info-item">
+                <span class="label">Poste actuel :</span>
+                <span class="value">{{ req.posteActuel }}</span>
+              </div>
+              <div class="info-item">
+                <span class="label">Entreprise :</span>
+                <span class="value">{{ req.entreprise }}</span>
+              </div>
+              <div class="info-item" *ngIf="req.secteur">
+                <span class="label">Secteur :</span>
+                <span class="value">{{ req.secteur }}</span>
+              </div>
+            </div>
+
+            <div class="request-card-actions">
+              <button class="btn btn-approve w-full" (click)="treatRequest(req.id, true)">
+                Approuver comme Mentor
+              </button>
+              <button class="btn btn-reject w-full" (click)="treatRequest(req.id, false)">
+                Refuser la demande
+              </button>
+            </div>
+          </div>
+
+          <div class="empty-requests card-surface" *ngIf="requests.length === 0">
+            <div class="empty-icon">🎉</div>
+            <h3>Toutes les demandes ont été traitées</h3>
+            <p>Il n'y a aucune demande de mentorat en attente d'approbation.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

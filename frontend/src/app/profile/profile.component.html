@@ -1,0 +1,224 @@
+<div class="container profile-page-wrapper animate-fade-in" *ngIf="profile">
+  <!-- Top: Hero Profile Card -->
+  <div class="profile-hero-card">
+    <div class="hero-bg"></div>
+    <div class="hero-body">
+      <div class="avatar-section">
+        <div class="avatar-container">
+          <img [src]="profile.photo || 'https://ui-avatars.com/api/?name=' + (profile.nom || 'U') + '+' + (profile.prenom || '') + '&background=1f4f97&color=fff'" alt="Avatar" class="profile-avatar">
+          <label class="avatar-upload-btn" for="avatar-input" title="Changer la photo">
+            <svg viewBox="0 0 24 24" class="camera-icon"><path fill="currentColor" d="M4 4h3l2-2h6l2 2h3c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm8 13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm0-8c1.65 0 3 1.35 3 3s-1.35 3-3 3-3-1.35-3-3 1.35-3 3-3z"/></svg>
+          </label>
+          <input type="file" id="avatar-input" (change)="onFileSelected($event)" hidden accept="image/*">
+        </div>
+      </div>
+      
+      <div class="hero-info">
+        <div class="name-row">
+          <h1>{{ (profile.nom || '') + ' ' + (profile.prenom || '') }}</h1>
+          <span class="role-badge" [class]="profile.typeUser?.toLowerCase()">
+            {{ profile.typeUser === 'ETUDIANT' ? 'Étudiant' : profile.typeUser }}
+          </span>
+        </div>
+        <p class="user-email">{{ profile.email }}</p>
+        
+        <!-- Mentor Status for Alumni -->
+        <div *ngIf="profile.typeUser === 'ALUMNI'" class="mentor-status-row">
+          <span class="status-indicator" [class]="getMentorStatusClass()"></span>
+          <span class="status-text">Statut Mentorat : <strong>{{ getMentorStatusLabel() }}</strong></span>
+        </div>
+      </div>
+
+      <div class="hero-actions">
+        <button class="btn" [class.btn-outline]="!isEditing" [class.btn-danger]="isEditing" (click)="toggleEdit()">
+          <span *ngIf="!isEditing">Modifier le profil</span>
+          <span *ngIf="isEditing">Annuler</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Grid -->
+  <div class="profile-main-grid">
+    
+    <!-- Left Column: Primary Info -->
+    <div class="grid-column">
+      
+      <!-- Card: Informations Personnelles -->
+      <div class="profile-card">
+        <div class="card-header">
+          <div class="header-icon">👤</div>
+          <h2>Informations Personnelles</h2>
+        </div>
+        
+        <div class="card-body">
+          <form (ngSubmit)="saveProfile()" #profileForm="ngForm">
+            <div class="info-grid">
+              <div class="info-group">
+                <label>Email professionnel</label>
+                <div *ngIf="!isEditing" class="info-value">{{ profile.emailProfessionnel || 'Non renseigné' }}</div>
+                <input *ngIf="isEditing" type="email" [(ngModel)]="editData.emailProfessionnel" name="emailPro" class="form-input">
+              </div>
+              
+              <div class="info-group">
+                <label>Profil LinkedIn</label>
+                <div *ngIf="!isEditing" class="info-value">
+                  <a *ngIf="profile.linkedinUrl" [href]="profile.linkedinUrl" target="_blank" class="link-gold">
+                    Voir le profil LinkedIn →
+                  </a>
+                  <span *ngIf="!profile.linkedinUrl">Non renseigné</span>
+                </div>
+                <input *ngIf="isEditing" type="url" [(ngModel)]="editData.linkedinUrl" name="linkedinUrl" class="form-input" placeholder="https://linkedin.com/in/...">
+              </div>
+
+              <div class="info-group full-width">
+                <label>Biographie / À propos</label>
+                <div *ngIf="!isEditing" class="info-value bio-text">{{ profile.bio || 'Aucune biographie renseignée.' }}</div>
+                <textarea *ngIf="isEditing" [(ngModel)]="editData.bio" name="bio" class="form-input" rows="4" placeholder="Parlez-nous de vous..."></textarea>
+              </div>
+            </div>
+
+            <!-- Card: Informations Académiques (Student only) -->
+            <ng-container *ngIf="profile.typeUser === 'ETUDIANT'">
+              <div class="section-divider"></div>
+              <div class="info-grid">
+                <div class="info-group">
+                  <label>Filière</label>
+                  <div class="info-value">{{ profile.filiere || 'Non renseignée' }}</div>
+                </div>
+                <div class="info-group">
+                  <label>Spécialité</label>
+                  <div class="info-value">{{ profile.specialite || 'Non renseignée' }}</div>
+                </div>
+              </div>
+            </ng-container>
+
+            <!-- Card: Informations Professionnelles (Alumni only) -->
+            <ng-container *ngIf="profile.typeUser === 'ALUMNI'">
+              <div class="section-divider"></div>
+              <div class="card-header-small">
+                <h3>Parcours Professionnel</h3>
+              </div>
+              <div class="info-grid">
+                <div class="info-group">
+                  <label>Poste actuel</label>
+                  <div *ngIf="!isEditing" class="info-value">{{ profile.posteActuel || 'Non renseigné' }}</div>
+                  <input *ngIf="isEditing" type="text" [(ngModel)]="editData.posteActuel" name="posteActuel" class="form-input">
+                </div>
+                <div class="info-group">
+                  <label>Entreprise</label>
+                  <div *ngIf="!isEditing" class="info-value">{{ profile.entreprise || 'Non renseignée' }}</div>
+                  <input *ngIf="isEditing" type="text" [(ngModel)]="editData.entreprise" name="entreprise" class="form-input">
+                </div>
+                <div class="info-group">
+                  <label>Secteur</label>
+                  <div *ngIf="!isEditing" class="info-value">{{ profile.secteur || 'Non renseigné' }}</div>
+                  <input *ngIf="isEditing" type="text" [(ngModel)]="editData.secteur" name="secteur" class="form-input">
+                </div>
+                <div class="info-group">
+                  <label>Pays</label>
+                  <div *ngIf="!isEditing" class="info-value">{{ profile.pays || 'Non renseigné' }}</div>
+                  <input *ngIf="isEditing" type="text" [(ngModel)]="editData.pays" name="pays" class="form-input">
+                </div>
+              </div>
+            </ng-container>
+
+            <div *ngIf="isEditing" class="form-footer">
+              <button type="submit" class="btn btn-gold" [disabled]="loading">
+                <span *ngIf="!loading">Sauvegarder les modifications</span>
+                <span *ngIf="loading">Chargement...</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Skills & Status -->
+    <div class="grid-column">
+      
+      <!-- Card: Mentorat (Alumni only) -->
+      <div *ngIf="profile.typeUser === 'ALUMNI'" class="profile-card mentorat-card">
+        <div class="card-header">
+          <div class="header-icon">🤝</div>
+          <h2>Disponibilité Mentorat</h2>
+        </div>
+        <div class="card-body">
+          <div class="mentorat-toggle-box">
+            <div class="toggle-info">
+              <p>Souhaitez-vous accompagner des étudiants dans leur parcours ?</p>
+              <div class="toggle-status">
+                Statut actuel : <span [class]="profile.disponibleMentorat ? 'text-success' : 'text-muted'">
+                  {{ profile.disponibleMentorat ? 'Disponible' : 'Non disponible' }}
+                </span>
+              </div>
+            </div>
+            
+            <div class="mentorat-actions">
+              <button *ngIf="canRequestMentor()" class="btn btn-gold w-full" (click)="demanderDevenirMentor()" [disabled]="loading">
+                Devenir Mentor
+              </button>
+              <div *ngIf="profile.demandeStatut === 'EN_ATTENTE'" class="status-alert info">
+                Votre demande est en cours d'examen par l'administration.
+              </div>
+              <div *ngIf="profile.demandeStatut === 'ACCEPTEE'" class="status-alert success">
+                Félicitations ! Vous êtes un mentor certifié SmartAlumni.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card: CV & Documents -->
+      <div *ngIf="profile.typeUser === 'ALUMNI'" class="profile-card">
+        <div class="card-header">
+          <div class="header-icon">📄</div>
+          <h2>Documents</h2>
+        </div>
+        <div class="card-body">
+          <div class="document-item">
+            <div class="doc-info">
+              <strong>Curriculum Vitae</strong>
+              <p>Mettez à jour votre CV pour améliorer votre visibilité.</p>
+            </div>
+            <a routerLink="/cv" class="btn btn-outline btn-sm">Gérer mon CV</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card: Compétences & Expériences (Extracted from CV) -->
+      <div *ngIf="profile.typeUser === 'ALUMNI' && (profile.competences || profile.experiences)" class="profile-card">
+        <div class="card-header">
+          <div class="header-icon">✨</div>
+          <h2>Expertise</h2>
+        </div>
+        <div class="card-body">
+          <div *ngIf="profile.competences" class="expertise-section">
+            <label>Compétences</label>
+            <div class="skills-tags">
+              <span *ngFor="let skill of profile.competences?.split(',')" class="skill-tag">{{ skill.trim() }}</span>
+            </div>
+          </div>
+          
+          <div *ngIf="profile.experiences" class="expertise-section mt-4">
+            <label>Expériences</label>
+            <div class="exp-list">
+              <p class="exp-text">{{ profile.experiences }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Success Popup -->
+  <div class="popup-backdrop" *ngIf="showSuccessPopup">
+    <div class="popup-card animate-fade-in">
+      <div class="popup-icon">✓</div>
+      <h3>Profil mis à jour</h3>
+      <p>Vos modifications ont été enregistrées avec succès.</p>
+      <button type="button" class="btn btn-primary" (click)="closeSuccessPopup()">Continuer</button>
+    </div>
+  </div>
+</div>

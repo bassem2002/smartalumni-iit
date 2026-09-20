@@ -1,0 +1,199 @@
+<div class="container chat-page-wrapper animate-fade-in">
+  <div class="chat-main-card card-surface">
+    <!-- Sidebar: Conversations List -->
+    <aside class="chat-sidebar" [class.mobile-hidden]="selectedConversation">
+      <div class="sidebar-header">
+        <div class="header-top">
+          <h2>Messagerie</h2>
+          <span class="conv-count" *ngIf="conversations.length > 0">{{ conversations.length }}</span>
+        </div>
+        <div class="search-box">
+          <i class="search-icon">🔍</i>
+          <input type="text" placeholder="Rechercher une discussion..." class="form-input-sm">
+        </div>
+      </div>
+      
+      <div class="conversation-list">
+        <div *ngIf="loadingConversations" class="loading-state-mini">
+          <div class="spinner-sm"></div>
+          <p>Chargement des conversations...</p>
+        </div>
+        
+        <div *ngIf="!loadingConversations && conversations.length === 0" class="empty-conversations">
+          <div class="empty-icon-wrapper">
+            <span class="empty-icon">💬</span>
+          </div>
+          <p class="empty-title">Aucune conversation</p>
+          <p class="empty-desc">Les conversations apparaissent après l'acceptation d'une demande de mentorat.</p>
+          <a routerLink="/mentors" class="btn btn-gold btn-sm mt-3">Trouver un mentor</a>
+        </div>
+
+        <div *ngFor="let conv of conversations" 
+             class="conversation-item" 
+             [class.active]="selectedConversation?.id === conv.id"
+             (click)="onSelectConversation(conv)">
+          <div class="conv-avatar">
+            <img *ngIf="getOtherParticipantPhoto(conv)" [src]="getOtherParticipantPhoto(conv)" alt="Avatar">
+            <div *ngIf="!getOtherParticipantPhoto(conv)" class="avatar-placeholder-sm" [style.background-color]="getRandomColor(getOtherParticipantName(conv))">
+              {{ getOtherParticipantName(conv)[0] }}
+            </div>
+            <div *ngIf="conv.messagesNonLus > 0" class="unread-dot"></div>
+          </div>
+          <div class="conv-info">
+            <div class="conv-header-row">
+              <span class="conv-name">{{ getOtherParticipantName(conv) }}</span>
+              <span class="conv-time">{{ conv.derniereMiseAJour | date:'HH:mm' }}</span>
+            </div>
+            <div class="conv-role-row">
+              <span class="participant-role">{{ getOtherParticipantRole(conv) }}</span>
+            </div>
+            <div class="conv-preview-row">
+              <p class="conv-last-msg" [class.unread-text]="conv.messagesNonLus > 0">
+                {{ conv.dernierMessage?.contenu || 'Nouvelle conversation' }}
+              </p>
+              <span *ngIf="conv.messagesNonLus > 0" class="unread-badge">{{ conv.messagesNonLus }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main: Message Area -->
+    <main class="chat-area" [class.mobile-hidden]="!selectedConversation">
+      <ng-container *ngIf="selectedConversation; else noSelection">
+        <header class="chat-header">
+          <div class="header-left">
+            <button class="btn-back-mobile" (click)="selectedConversation = null">
+              <i class="back-icon">←</i>
+            </button>
+            <div class="active-user-info">
+              <div class="active-avatar">
+                <img *ngIf="getOtherParticipantPhoto(selectedConversation)" [src]="getOtherParticipantPhoto(selectedConversation)" alt="">
+                <div *ngIf="!getOtherParticipantPhoto(selectedConversation)" class="avatar-placeholder-sm" [style.background-color]="getRandomColor(getOtherParticipantName(selectedConversation))">
+                  {{ getOtherParticipantName(selectedConversation)[0] }}
+                </div>
+              </div>
+              <div class="active-details">
+                <h3>{{ getOtherParticipantName(selectedConversation) }}</h3>
+                <div class="status-wrapper">
+                  <span class="active-role">{{ getOtherParticipantRole(selectedConversation) }}</span>
+                  <span class="separator">•</span>
+                  <span class="active-status">En ligne</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="header-actions">
+            <a routerLink="/mentorship-requests" class="btn-action-text">Voir la demande</a>
+            <button class="btn-icon-circle" title="Paramètres">
+              <i>⚙️</i>
+            </button>
+          </div>
+        </header>
+
+        <div class="messages-container" #scrollMe>
+          <div *ngIf="loadingMessages" class="loading-state-mini">
+            <div class="spinner"></div>
+          </div>
+          
+          <div *ngFor="let msg of messages; let i = index" 
+               class="message-group"
+               [class.me]="msg.expediteurId == currentUserId"
+               [class.other]="msg.expediteurId != currentUserId">
+            
+            <!-- Date Separator if needed (logic simplified here) -->
+            
+            <div class="message-wrapper">
+              <div class="message-bubble-container">
+                <div class="message-bubble">
+                  <!-- Content -->
+                  <p *ngIf="msg.contenu" class="message-text">{{ msg.contenu }}</p>
+                  
+                  <!-- File Attachments -->
+                  <div *ngIf="msg.fileUrl" class="message-attachment">
+                    <!-- Image -->
+                    <div *ngIf="msg.fileType === 'IMAGE'" class="attachment-image">
+                      <a [href]="getFileUrl(msg.fileUrl)" target="_blank">
+                        <img [src]="getFileUrl(msg.fileUrl)" alt="Image">
+                      </a>
+                    </div>
+
+                    <!-- Audio -->
+                    <div *ngIf="msg.fileType === 'AUDIO'" class="attachment-audio">
+                      <audio [src]="getFileUrl(msg.fileUrl)" controls></audio>
+                    </div>
+
+                    <!-- Generic File -->
+                    <div *ngIf="msg.fileType !== 'IMAGE' && msg.fileType !== 'AUDIO'" class="attachment-file">
+                      <div class="file-icon-box">📄</div>
+                      <div class="file-details">
+                        <span class="file-name">{{ getFileName(msg.fileUrl) }}</span>
+                        <a [href]="getFileUrl(msg.fileUrl)" [download]="getFileName(msg.fileUrl)" class="file-download">
+                          Télécharger
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="message-info">
+                    <span class="message-time">{{ msg.dateEnvoi | date:'HH:mm' }}</span>
+                    <span *ngIf="msg.expediteurId == currentUserId" class="message-status">
+                      <i class="check-icon">✓✓</i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <footer class="chat-input-container">
+          <div class="input-actions-wrapper">
+            <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none;">
+            <button type="button" class="btn-input-action" (click)="fileInput.click()" title="Joindre un fichier">
+              <span class="icon">📎</span>
+            </button>
+            <button type="button" class="btn-input-action" (click)="toggleRecording()" [class.recording]="isRecording" title="Message vocal">
+              <span class="icon">{{ isRecording ? '⏹️' : '🎤' }}</span>
+            </button>
+            
+            <form (ngSubmit)="sendMessage()" class="input-form-modern">
+              <div class="input-wrapper-modern">
+                <textarea 
+                  [(ngModel)]="newMessage" 
+                  name="newMessage" 
+                  placeholder="Écrivez votre message..." 
+                  autocomplete="off"
+                  rows="1"
+                  (keydown.enter)="$event.preventDefault(); sendMessage()"
+                  class="message-input-modern"></textarea>
+              </div>
+              <button type="submit" class="btn-send-modern" [disabled]="!newMessage.trim() && !isRecording">
+                <span class="send-text">Envoyer</span>
+                <span class="send-icon">➤</span>
+              </button>
+            </form>
+          </div>
+        </footer>
+      </ng-container>
+
+      <ng-template #noSelection>
+        <div class="no-selection-state">
+          <div class="no-selection-content">
+            <div class="empty-illustration-wrapper">
+              <div class="bubble-decor b1"></div>
+              <div class="bubble-decor b2"></div>
+              <span class="main-icon">💬</span>
+            </div>
+            <h3>Vos conversations</h3>
+            <p>Sélectionnez une discussion à gauche pour commencer à échanger avec votre mentor ou étudiant.</p>
+            <div class="no-selection-actions">
+              <a routerLink="/mentors" class="btn btn-primary">Explorer le réseau</a>
+              <a routerLink="/mentorship-requests" class="btn btn-outline">Voir mes demandes</a>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </main>
+  </div>
+</div>

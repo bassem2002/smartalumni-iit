@@ -1,0 +1,332 @@
+.mentors-page-wrapper {
+  padding-top: 2rem;
+  padding-bottom: 5rem;
+}
+
+/* Page Header */
+.mentors-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 3rem;
+  gap: 2rem;
+}
+
+.brand-badge {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  background-color: rgba(31, 79, 151, 0.1);
+  border: 1px solid rgba(31, 79, 151, 0.2);
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--iit-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.mentors-header h1 {
+  font-size: 2.75rem;
+  margin: 0 0 0.75rem;
+  color: var(--iit-text);
+}
+
+.mentors-header h1 span {
+  color: var(--iit-blue);
+}
+
+.header-subtitle {
+  font-size: 1.1rem;
+  color: var(--iit-muted);
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+.header-actions {
+  flex-shrink: 0;
+}
+
+/* Filters Section */
+.filters-section {
+  padding: 2rem;
+  margin-bottom: 3rem;
+  background: white;
+}
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr 0.8fr;
+  gap: 1.5rem;
+  align-items: flex-end;
+}
+
+.search-input-wrapper {
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--iit-muted);
+  font-size: 0.9rem;
+}
+
+.search-input-wrapper input {
+  padding-left: 2.75rem !important;
+}
+
+.filter-actions-row {
+  display: flex;
+  gap: 0.75rem;
+}
+
+/* Results Grid */
+.mentors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 2rem;
+}
+
+/* Modern Mentor Card */
+.mentor-card-modern {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: white;
+  border: 1px solid var(--iit-border);
+}
+
+.mentor-card-modern:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  border-color: var(--iit-blue);
+}
+
+.mentor-card-header {
+  display: flex;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.mentor-avatar-box {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+}
+
+.mentor-img, .mentor-avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  object-fit: cover;
+}
+
+.mentor-avatar-placeholder {
+  background: linear-gradient(135deg, var(--iit-blue) 0%, var(--iit-blue-dark) 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.status-indicator {
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 3px solid white;
+  background-color: var(--iit-muted);
+}
+
+.status-indicator.available {
+  background-color: var(--iit-success);
+}
+
+.mentor-name-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+
+.mentor-name-row h3 {
+  font-size: 1.2rem;
+  margin: 0;
+  color: var(--iit-text);
+}
+
+.badge-role {
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  background: rgba(217, 164, 0, 0.1);
+  color: var(--iit-gold-dark);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.mentor-job {
+  font-size: 0.95rem;
+  color: var(--iit-blue);
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.mentor-company {
+  font-size: 0.85rem;
+  color: var(--iit-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* Card Body */
+.mentor-card-body {
+  flex-grow: 1;
+  margin-bottom: 2rem;
+}
+
+.mentor-meta-info {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--iit-border);
+}
+
+.meta-item {
+  font-size: 0.8rem;
+  color: var(--iit-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.mentor-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.skill-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: var(--iit-card-soft);
+  color: var(--iit-blue);
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+}
+
+.no-data {
+  font-size: 0.8rem;
+  color: var(--iit-muted);
+  font-style: italic;
+}
+
+/* Card Footer */
+.mentor-card-footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--iit-border);
+}
+
+/* Empty State */
+.empty-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 5rem 2rem;
+}
+
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+}
+
+.empty-results h3 {
+  margin-bottom: 1rem;
+}
+
+.empty-results p {
+  color: var(--iit-muted);
+  margin-bottom: 2rem;
+}
+
+/* Loading State */
+.loading-state {
+  text-align: center;
+  padding: 5rem 0;
+  grid-column: 1 / -1;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid rgba(31, 79, 151, 0.1);
+  border-top-color: var(--iit-blue);
+  border-radius: 50%;
+  margin: 0 auto 1.5rem;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .filters-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .filter-actions-row {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 768px) {
+  .mentors-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .filters-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .filter-actions-row {
+    grid-column: span 1;
+  }
+  
+  .filter-actions-row button {
+    flex: 1;
+  }
+  
+  .mentors-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.spinner-old {
+  height: 40px;
+  border: 4px solid rgba(148, 163, 184, 0.2);
+}
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1.5rem;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }

@@ -1,0 +1,5 @@
+/* Global styles for AppComponent */
+.app-shell {
+	min-height: 100vh;
+	background: var(--bg-main);
+}

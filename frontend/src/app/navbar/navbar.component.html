@@ -1,0 +1,82 @@
+<nav class="navbar" [class.menu-open]="isMenuOpen" *ngIf="shouldShowNavbar()">
+  <div class="container nav-container">
+    <!-- Logo -->
+    <a routerLink="/home" class="logo">
+      <span class="logo-smart">Smart</span><span class="logo-alumni">Alumni</span> <span class="logo-iit">IIT</span>
+    </a>
+
+    <!-- Mobile Toggle -->
+    <button class="menu-toggle" (click)="toggleMenu()" aria-label="Toggle menu">
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </button>
+
+    <!-- Navigation Links -->
+    <div class="nav-content">
+      <ul class="nav-links">
+        <!-- Common Public Link -->
+        <li><a routerLink="/home" routerLinkActive="active" class="nav-link">Accueil</a></li>
+
+        <!-- Visitor Links -->
+        <ng-container *ngIf="!isAuthenticated">
+          <li><a routerLink="/login" routerLinkActive="active" class="nav-link">Se connecter</a></li>
+        </ng-container>
+
+        <!-- Authenticated (Non-Admin) Links -->
+        <ng-container *ngIf="isAuthenticated && !authService.isAdmin()">
+          <li><a routerLink="/mentors" routerLinkActive="active" class="nav-link">Mentors</a></li>
+          
+          <!-- Student Specific -->
+          <li *ngIf="authService.isStudent()">
+            <a routerLink="/mentorship-requests" routerLinkActive="active" class="nav-link">Mes demandes</a>
+          </li>
+
+          <!-- Alumni Specific -->
+          <li *ngIf="authService.isAlumni()">
+            <a routerLink="/mentorship-requests" routerLinkActive="active" class="nav-link">Mentorat</a>
+          </li>
+          <li *ngIf="authService.isAlumni()">
+            <a routerLink="/cv" routerLinkActive="active" class="nav-link">Mon CV</a>
+          </li>
+
+          <li><a routerLink="/conversations" routerLinkActive="active" class="nav-link">Messages</a></li>
+        </ng-container>
+
+        <!-- Admin Links -->
+        <ng-container *ngIf="isAuthenticated && authService.isAdmin()">
+          <li><a routerLink="/admin/dashboard" routerLinkActive="active" class="nav-link">Dashboard Admin</a></li>
+        </ng-container>
+
+        <!-- User Profile Link -->
+        <li *ngIf="isAuthenticated">
+          <a routerLink="/profile" routerLinkActive="active" class="nav-link">Profil</a>
+        </li>
+      </ul>
+
+      <!-- Action Buttons / User Info -->
+      <div class="nav-actions">
+        <ng-container *ngIf="!isAuthenticated">
+          <a routerLink="/register" class="btn btn-gold btn-sm">Rejoindre SmartAlumni</a>
+        </ng-container>
+
+        <ng-container *ngIf="isAuthenticated">
+          <div class="user-info">
+            <div class="user-avatar-container">
+              <img *ngIf="userPhoto" [src]="userPhoto" alt="Profile" class="user-avatar">
+              <div *ngIf="!userPhoto" class="user-avatar-placeholder">
+                {{ authService.getUserInfo()?.prenom?.[0] || 'U' }}
+              </div>
+            </div>
+            <span class="user-name">{{ authService.getUserInfo()?.prenom }}</span>
+          </div>
+          <button (click)="logout()" class="btn btn-outline-white btn-sm logout-btn">
+            <span>Déconnexion</span>
+          </button>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</nav>

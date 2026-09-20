@@ -1,0 +1,176 @@
+.brand-badge {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  color: var(--iit-gold);
+}
+
+.auth-hero-side h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  color: white;
+  line-height: 1.2;
+}
+
+.hero-description {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin-bottom: 3rem;
+  line-height: 1.6;
+}
+
+.benefits-list {
+  list-style: none;
+  margin-bottom: 4rem;
+}
+
+.benefits-list li {
+  display: flex;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.benefit-icon {
+  font-size: 1.5rem;
+  width: 48px;
+  height: 48px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.benefit-text strong {
+  display: block;
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
+}
+
+.benefit-text span {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--iit-gold);
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  opacity: 0.7;
+}
+
+/* Form Side Styles */
+.auth-card-container {
+  width: 100%;
+  max-width: 440px;
+  padding: 2.5rem;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+}
+
+.form-header {
+  margin-bottom: 2.5rem;
+}
+
+.form-header h2 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.form-header p {
+  color: var(--iit-muted);
+  font-size: 0.95rem;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  font-size: 0.875rem;
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  color: var(--iit-muted);
+}
+
+.forgot-link {
+  color: var(--iit-blue);
+  font-weight: 500;
+}
+
+.error-alert {
+  background-color: #fef2f2;
+  border: 1px solid #fee2e2;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.error-icon {
+  font-size: 1.1rem;
+}
+
+.error-text {
+  color: var(--iit-danger);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.auth-footer {
+  margin-top: 2.5rem;
+  text-align: center;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--iit-border);
+}
+
+.auth-footer p {
+  font-size: 0.95rem;
+  color: var(--iit-muted);
+  margin-bottom: 1rem;
+}
+
+.signup-link {
+  color: var(--iit-blue);
+  font-weight: 700;
+}
+
+.back-home {
+  font-size: 0.875rem;
+  color: var(--iit-muted);
+  display: inline-block;
+}
+
+.back-home:hover {
+  color: var(--iit-blue);
+}

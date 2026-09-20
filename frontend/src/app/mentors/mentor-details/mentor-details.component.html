@@ -1,0 +1,206 @@
+<div class="container mentor-details-page animate-fade-in" *ngIf="mentor">
+  <!-- Top Navigation & Actions -->
+  <nav class="details-nav">
+    <a routerLink="/mentors" class="btn-back">
+      <span class="icon">←</span> Retour aux mentors
+    </a>
+  </nav>
+
+  <div class="mentor-layout">
+    <!-- Left Column: Primary Mentor Card -->
+    <aside class="mentor-sidebar">
+      <div class="mentor-main-card card-surface">
+        <div class="mentor-header-bg"></div>
+        <div class="mentor-header-body">
+          <div class="mentor-avatar-container">
+            @if (mentor.photo) {
+              <img [src]="mentor.photo" alt="Photo de {{ mentor.prenom }}" class="mentor-photo">
+            } @else {
+              <div class="mentor-initials">
+                {{ mentor.prenom[0] }}{{ mentor.nom[0] }}
+              </div>
+            }
+          </div>
+          
+          <div class="mentor-info-header">
+            <div class="name-row">
+              <h1>{{ mentor.prenom }} {{ mentor.nom }}</h1>
+              <span class="badge-role">Alumni</span>
+            </div>
+            <p class="mentor-job-title">{{ mentor.posteActuel || 'Poste non renseigné' }}</p>
+            <p class="mentor-company-name">&#64; {{ mentor.entreprise || 'Non renseigné' }}</p>
+          </div>
+
+          <div class="mentor-status-badge" [class.available]="mentor.disponibleMentorat">
+            <span class="status-dot"></span>
+            {{ mentor.disponibleMentorat ? 'Disponible pour mentorat' : 'Non disponible actuellement' }}
+          </div>
+
+          <div class="mentor-actions">
+            <button class="btn btn-gold btn-lg w-full" 
+                    (click)="openRequestModal()" 
+                    [disabled]="!mentor.disponibleMentorat">
+              Envoyer une demande de mentorat
+            </button>
+            <button class="btn btn-outline w-full" (click)="openConversation()">
+              Envoyer un message
+            </button>
+          </div>
+        </div>
+
+        <div class="mentor-quick-meta">
+          <div class="meta-row">
+            <span class="meta-label">Secteur</span>
+            <span class="meta-value">{{ mentor.secteur || 'Non renseigné' }}</span>
+          </div>
+          <div class="meta-row">
+            <span class="meta-label">Localisation</span>
+            <span class="meta-value">{{ mentor.pays || 'Non renseigné' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Why this mentor? Card -->
+      <div class="why-mentor-card card-surface">
+        <h3>Pourquoi choisir ce mentor ?</h3>
+        <ul class="why-list">
+          <li>
+            <span class="why-icon">💼</span>
+            <div class="why-text">
+              <strong>Expérience confirmée</strong>
+              <p>Expertise dans le secteur {{ mentor.secteur || 'professionnel' }}</p>
+            </div>
+          </li>
+          <li>
+            <span class="why-icon">🎯</span>
+            <div class="why-text">
+              <strong>Compétences ciblées</strong>
+              <p>{{ getSkills(mentor.competences).length }} compétences partagées</p>
+            </div>
+          </li>
+          <li>
+            <span class="why-icon">🎓</span>
+            <div class="why-text">
+              <strong>Réseau Alumni IIT</strong>
+              <p>Partage la même culture universitaire</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Right Column: Details & Experience -->
+    <main class="mentor-content">
+      <!-- Section: Bio -->
+      <section class="content-card card-surface">
+        <div class="card-header">
+          <span class="header-icon">👤</span>
+          <h2>À propos du mentor</h2>
+        </div>
+        <div class="card-body">
+          <p class="bio-text">{{ mentor.bio || 'Aucune biographie disponible pour ce mentor.' }}</p>
+        </div>
+      </section>
+
+      <!-- Section: Skills -->
+      <section class="content-card card-surface">
+        <div class="card-header">
+          <span class="header-icon">✨</span>
+          <h2>Compétences & Expertise</h2>
+        </div>
+        <div class="card-body">
+          <div class="skills-grid">
+            @for (skill of getSkills(mentor.competences); track skill) {
+              <span class="skill-pill">{{ skill }}</span>
+            }
+            @if (!mentor.competences) {
+              <p class="no-data">Aucune compétence listée.</p>
+            }
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Experience -->
+      <section class="content-card card-surface">
+        <div class="card-header">
+          <span class="header-icon">🏢</span>
+          <h2>Parcours Professionnel</h2>
+        </div>
+        <div class="card-body">
+          <div class="experience-content">
+            @if (mentor.experiences) {
+              <p class="exp-text">{{ mentor.experiences }}</p>
+            } @else {
+              <p class="no-data">Aucun historique d'expérience listé.</p>
+            }
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Education -->
+      <section class="content-card card-surface">
+        <div class="card-header">
+          <span class="header-icon">🎓</span>
+          <h2>Formation & Certifications</h2>
+        </div>
+        <div class="card-body">
+          <div class="timeline">
+            @if (mentor?.titres?.length) {
+              @for (edu of mentor.titres; track edu.id) {
+                <div class="timeline-item">
+                  <div class="timeline-marker"></div>
+                  <div class="timeline-info">
+                    <h4>{{ edu.intitule }}</h4>
+                    <p class="institution">{{ edu.organismeDelivrant }}</p>
+                    <p class="date">{{ edu.dateObtention }}</p>
+                  </div>
+                </div>
+              }
+            } @else {
+              <p class="no-data">Aucun historique de formation listé.</p>
+            }
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Request Modal -->
+  @if (showRequestModal) {
+    <div class="modal-backdrop" (click)="closeRequestModal()">
+      <div class="modal-card animate-scale-up" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h2>Demande de mentorat</h2>
+          <button class="btn-close" (click)="closeRequestModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="mentor-mini-profile">
+            <img [src]="mentor.photo || 'https://ui-avatars.com/api/?name=' + mentor.prenom + '+' + mentor.nom" alt="" class="mini-avatar">
+            <div class="mini-info">
+              <strong>{{ mentor.prenom }} {{ mentor.nom }}</strong>
+              <span>{{ mentor.posteActuel }}</span>
+            </div>
+          </div>
+          <p class="instruction">Envoyez un message personnalisé pour expliquer vos attentes et pourquoi vous souhaitez être accompagné par ce mentor.</p>
+          <textarea [(ngModel)]="requestMessage" 
+                    placeholder="Bonjour, je suis très intéressé par votre parcours et j'aimerais bénéficier de vos conseils concernant..." 
+                    rows="6" class="form-input"></textarea>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline" (click)="closeRequestModal()">Annuler</button>
+          <button class="btn btn-gold" (click)="sendRequest()" [disabled]="sending || !requestMessage">
+            {{ sending ? 'Envoi en cours...' : 'Envoyer la demande' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Success Toast -->
+  @if (successMessage) {
+    <div class="success-toast animate-slide-in">
+      <span class="icon">✓</span>
+      {{ successMessage }}
+    </div>
+  }
+</div>
