@@ -216,6 +216,129 @@ npm run build
 
 Never commit database passwords, JWT secrets, or API keys.
 
+## AI Processing in Detail
+
+SmartAlumni combines deterministic processing with optional external AI services instead of making the entire platform dependent on a single model.
+
+### CV analysis pipeline
+
+```text
+CV upload
+   │
+   ▼
+File ownership and format validation
+   │
+   ▼
+Apache Tika text extraction
+   │
+   ├── DeepSeek enabled and configured ──► Structured AI extraction
+   │
+   └── Provider unavailable/disabled ────► Local fallback analysis
+   │
+   ▼
+Validated CV information and profile mapping
+```
+
+The backend calls DeepSeek through `AiCvExtractionServiceImpl` using configurable model, URL, API key, and timeout values. `CVServiceImpl` verifies CV ownership and provides a local fallback path if the external AI call fails.
+
+### Recommendations and assistant
+
+- Mentor recommendations use a business scoring service and return the highest-ranked compatible alumni.
+- The administrative chatbot can call DeepSeek for questions related to platform data.
+- AI integrations can be disabled for local development.
+- External model output is treated as assisted analysis rather than authoritative user data.
+
+## Security and Secret Management
+
+- Spring Security runs in stateless mode with a JWT authentication filter.
+- Passwords are encoded with BCrypt.
+- Method-level authorization is enabled.
+- Administrative endpoints require `ROLE_ADMIN`.
+- Recommendation endpoints require `ROLE_ETUDIANT`.
+- Profile, CV, mentorship, and conversation endpoints require authentication.
+- CORS rules are handled centrally by `CorsConfig`.
+- Public access is restricted to authentication, API documentation, health, files, and formation endpoints.
+
+The following values must be supplied through environment variables and must never be committed:
+
+```text
+DB_PASSWORD
+JWT_SECRET
+DEEPSEEK_API_KEY
+```
+
+Uploaded CVs, profile photos, and professional documents may contain personal data. Production deployment should therefore add private object storage, access-controlled download URLs, retention rules, backups, and audit logging.
+
+## Automated Tests
+
+The backend currently contains automated tests for:
+
+- Spring application context startup
+- Successful CV upload
+- Successful AI-assisted CV analysis
+- Local fallback behavior after an AI provider failure
+- Mentor recommendation ordering and top-four selection
+
+Run them with:
+
+```bash
+cd backend
+./mvnw test
+```
+
+The current suite focuses on service-level behavior. Controller integration tests, security tests, repository integration tests, frontend component tests, and end-to-end user journeys remain future work.
+
+## Complete Repository Structure
+
+```text
+smartalumni-iit/
+├── backend/
+│   ├── src/main/java/tn/IIT/mentorat_platform/
+│   │   ├── config/                   # Security, CORS, Swagger and initialization
+│   │   ├── controller/               # REST endpoints
+│   │   ├── dto/                      # API request and response contracts
+│   │   ├── entity/                   # Users, profiles, CVs, mentoring and messaging
+│   │   ├── exception/                # Business and API error handling
+│   │   ├── mapper/                   # Entity/DTO mapping
+│   │   ├── repository/               # Spring Data repositories
+│   │   ├── security/                 # JWT filter, provider and user details
+│   │   └── service/                  # Domain, recommendation, CV and AI services
+│   ├── src/main/resources/           # Spring configuration
+│   ├── src/test/                     # Backend automated tests
+│   ├── uploads/                      # Local development uploads
+│   ├── .env.example
+│   └── pom.xml
+├── frontend/
+│   ├── src/app/                      # Components, pages, guards and API services
+│   ├── src/assets/                   # Frontend assets
+│   ├── angular.json
+│   └── package.json
+├── images/                            # README screenshots
+├── LICENSE
+└── README.md
+```
+
+## Known Limitations
+
+- Several frontend services currently use `http://localhost:8081` directly instead of a single environment-based API configuration.
+- Uploaded files are stored on the backend filesystem.
+- Database schema changes rely on Hibernate `ddl-auto: update` rather than versioned migrations.
+- The AI experience depends on DeepSeek availability and API quotas when enabled.
+- Automated coverage is concentrated on CV analysis and recommendation services.
+- The repository does not currently include Docker Compose or a CI/CD workflow.
+- Production-grade monitoring, audit trails, backup procedures, and privacy-retention controls are not yet included.
+
+## Roadmap
+
+- Centralize frontend API URLs in Angular environment configuration
+- Introduce Flyway or Liquibase database migrations
+- Add controller, repository, security, frontend, and end-to-end tests
+- Move uploads to private object storage with signed access URLs
+- Add Docker Compose for PostgreSQL, backend, and frontend
+- Add CI checks for backend tests, frontend build, linting, and secret scanning
+- Add rate limiting and resilient retry/circuit-breaker policies around AI calls
+- Add observability, audit logging, backups, and deployment documentation
+
 ## 🎥 Demo Video
 
 A complete demonstration of SmartAlumni IIT, including the different user roles and the main platform workflows.
