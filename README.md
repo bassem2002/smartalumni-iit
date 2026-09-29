@@ -1,5 +1,15 @@
 # SmartAlumni IIT 🎓
 
+<p align="center">
+  <img src="https://img.shields.io/badge/Spring%20Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white" alt="Spring Boot" />
+  <img src="https://img.shields.io/badge/Angular%2019-DD0031?style=for-the-badge&logo=angular&logoColor=white" alt="Angular 19" />
+  <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL" />
+  <img src="https://img.shields.io/badge/AI-CV%20Analysis%20%7C%20Mentoring-0F766E?style=for-the-badge" alt="AI integration" />
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-14B8A6?style=for-the-badge" alt="MIT License" /></a>
+</p>
+
+<p align="center"><a href="#-key-features">Features</a> · <a href="#️-architecture">Architecture</a> · <a href="#-installation">Installation</a> · <a href="#️-application-preview">Preview</a></p>
+
 > Alumni–Student mentoring platform with Full-Stack development and AI-assisted CV analysis.
 
 SmartAlumni IIT is a web platform designed to connect IIT students with alumni mentors and facilitate professional mentoring.
