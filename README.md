@@ -121,6 +121,91 @@ SmartAlumni aims to:
 ```
 
 ---
+## 🚀 Installation
+
+### Prerequisites
+
+- JDK 21
+- Node.js 20 or later and npm
+- PostgreSQL 15 or later
+- A DeepSeek API key only if AI features are enabled
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/bassem2002/smartalumni-iit.git
+cd smartalumni-iit
+```
+
+### 2. Prepare PostgreSQL
+
+Create an empty database:
+
+```sql
+CREATE DATABASE mentorat_platform;
+```
+
+Hibernate uses `ddl-auto: update`, so the backend creates or updates the schema when it starts.
+
+### 3. Configure and start the backend
+
+Set the required environment variables before running Spring Boot:
+
+```bash
+cd backend
+export SERVER_PORT=8081
+export DB_URL=jdbc:postgresql://localhost:5432/mentorat_platform
+export DB_USERNAME=postgres
+export DB_PASSWORD=your_database_password
+export JWT_SECRET=replace-with-a-long-random-secret
+export DEEPSEEK_ENABLED=false
+./mvnw spring-boot:run
+```
+
+On Windows PowerShell:
+
+```powershell
+cd backend
+$env:SERVER_PORT = "8081"
+$env:DB_URL = "jdbc:postgresql://localhost:5432/mentorat_platform"
+$env:DB_USERNAME = "postgres"
+$env:DB_PASSWORD = "your_database_password"
+$env:JWT_SECRET = "replace-with-a-long-random-secret"
+$env:DEEPSEEK_ENABLED = "false"
+.\mvnw.cmd spring-boot:run
+```
+
+To enable AI features, set `DEEPSEEK_ENABLED=true` and provide `DEEPSEEK_API_KEY`. The API and Swagger UI are available at:
+
+- API: `http://localhost:8081`
+- Swagger UI: `http://localhost:8081/swagger-ui.html`
+
+### 4. Start the Angular frontend
+
+In a second terminal:
+
+```bash
+cd frontend
+npm install
+npm start
+```
+
+Open `http://localhost:4200`. The current frontend services expect the backend at `http://localhost:8081`.
+
+### 5. Verify the build
+
+```bash
+# Backend
+cd backend
+./mvnw test
+
+# Frontend
+cd ../frontend
+npm run build
+```
+
+Never commit database passwords, JWT secrets, or API keys.
+
 ## 🎥 Demo Video
 
 A complete demonstration of SmartAlumni IIT, including the different user roles and the main platform workflows.
